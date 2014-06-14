@@ -1,0 +1,34 @@
+Stockori flowering time dataset.
+
+697 individuals (plants)
+149 gentoypes
+flowering time
+country for each plant
+
+
+./genotype.csv
+[697 x 149]
+Genotype for each plant
+
+./flowering_time.csv
+[697 x 1]
+Flowering time in days for each plant
+
+./flowering_time_binary.csv
+[697 x 1] 
+1/0 , 0: for "fast flowering" (<=40)
+      1:     "slow flowering"  (>40)
+
+./country.csv
+[697 x 1]
+Origin of the respective plants (country)
+
+
+Alternatively you can load all these datasets in one go:
+
+./joint.csv
+[697 x 152]
+Contains genotypes, flowering_time, flowering_time_binary and country in one file
+
+./joint.xls 
+Same as joint.csv but in xls file format.
