@@ -1,0 +1,918 @@
+#LyX file created by tex2lyx 2.0.0
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass scrbook
+\options bibtotoc,idxtotoc,headsepline,footsepline,footexclude,BCOR12mm,DIV11
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 12
+\spacing single
+\use_hyperref 0
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+
+Feature- and Label-Selection for Multi-Label Classification
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "chapter:main"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+Purpose of this work is to develop and evaluate methods for splitting mulitlabel datasets into subsets. Two general approaches have been developed: 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Cluster based Splitting: using a transposed dataset for clustering, clusters resolve directly into groups
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Feature- and Cluster based Splitting: clustering is performed on feature selection results and merged into groups.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+
+In the following both methods will be explained in more detail.
+\end_layout
+
+\begin_layout Section
+
+Cluster based splitting
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "CML"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This first method transposes the dataset 
+\begin_inset Formula $ D $
+\end_inset
+
+ into a dataset 
+\begin_inset Formula $ D^T $
+\end_inset
+
+ where every attribute 
+\begin_inset Formula $ A = X \cup L $
+\end_inset
+
+ becomes a instance of 
+\begin_inset Formula $ D^T $
+\end_inset
+
+. In the next step a cluster algorithm is applied to the dataset 
+\begin_inset Formula $ D^T $
+\end_inset
+
+, resulting in clusters representing attributes of 
+\begin_inset Formula $ D $
+\end_inset
+
+. Because label values are binary, in contrast to the features which can be numeric values, a preprocessing step normalizes all values.
+\end_layout
+
+\begin_layout Standard
+
+In the resulting clusters, features and labels which are similar are combined. In respect to the method this will be a distance metric as used by Hierarchical Clustering and k-means or a probability distribution as used by EM. Therefore the clusters are grouped by attributes showing a similarity among the instances. These attributes have a higher dependence in-between the cluster than the to the rest of data.
+\end_layout
+
+\begin_layout Standard
+
+Those attributes can be split into features and labels, forming subsets 
+\begin_inset Formula $ D_{1..n} \subset D $
+\end_inset
+
+ of the complete dataset 
+\begin_inset Formula $ D $
+\end_inset
+
+. On each of those subsets a multi-label learner can be trained and predictions for the subsets of labels are composed together to gain a prediction for the entire labelset.
+\end_layout
+
+\begin_layout Section
+
+Feature- and Cluster based Splitting
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "FCML"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+As the first method is based on the pure attribute values in the data, it can not qualify attributes in respect to a label. It can only group attributes sharing common values among the instances, but not on its relevance to each other.
+\end_layout
+
+\begin_layout Standard
+
+To overcome this problem a second method has been developed which takes into account the relevance of features in respect to the labels.
+\end_layout
+
+\begin_layout Standard
+
+For every label 
+\begin_inset Formula $ Y \in L $
+\end_inset
+
+ of the dataset 
+\begin_inset Formula $ D $
+\end_inset
+
+ a feature selection is performed as described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chapter:FeatureSelection"
+
+\end_inset
+
+. This results in a new matrix 
+\begin_inset Formula $ D_{FS}=(x_{ij})_{i=1..l,j=1..m} $
+\end_inset
+
+ where every row 
+\begin_inset Formula $ i $
+\end_inset
+
+ represents a label, every column 
+\begin_inset Formula $ j $
+\end_inset
+
+ represents a attribute (features and labels) and 
+\begin_inset Formula $ x_{ij} $
+\end_inset
+
+ is the score computed by the feature selection.
+\end_layout
+
+\begin_layout Standard
+
+Subsequent a clustering is applied. Note that instances in 
+\begin_inset Formula $ D_{FS} $
+\end_inset
+
+ represent labels of 
+\begin_inset Formula $ D $
+\end_inset
+
+, so every cluster is a subset of 
+\begin_inset Formula $ L $
+\end_inset
+
+. To add features the feature selection scores are used. For every instance 
+\begin_inset Formula $ i $
+\end_inset
+
+ of a cluster 
+\begin_inset Formula $ c $
+\end_inset
+
+ every attribute 
+\begin_inset Formula $ X_j $
+\end_inset
+
+ represents the score of attribute 
+\begin_inset Formula $ X_j $
+\end_inset
+
+ in respect to the label 
+\begin_inset Formula $ Y_i \in L $
+\end_inset
+
+. If this score exceeds a threshold 
+\begin_inset Formula $ X_j $
+\end_inset
+
+ will be added to the current group. As labels will be grouped by clustering they are ignored in this step.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+FeatureSelection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fcml:fcs"
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+begin{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ l \gets |X\cup L| $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+COMMENT
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+number of attributes
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ m \gets |D| $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+COMMENT
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+number of instances
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ D_{FS} = {d_{{FS}_{ij}}}_{i=1..l,j=1..m}=\mathbb R^{l\times m} $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+FORALL
+\end_layout
+
+\end_inset
+
+[feature selection for all labels]
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ Y_i \in L $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ d_{{FS}_i} \gets <score_{Y_i1},...,score_{Y_il}> \gets featureSelection(Y_i) $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDFOR
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+Clustering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fcml:cluster"
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+begin{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ Clusters \gets clustering(D_{FS}) $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+COMMENT
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+clustering on the feature selection score matrix
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+FORALL
+\end_layout
+
+\end_inset
+
+[clusters]
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ C \in Clusters $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+FORALL
+\end_layout
+
+\end_inset
+
+[instances in cluster C (labels)]
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ Y_i \in C $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+FORALL
+\end_layout
+
+\end_inset
+
+[attributes in score vector (attributes)] 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ X_j \in d_{{FS}_i} $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+IF
+\end_layout
+
+\end_inset
+
+[only if 
+\begin_inset Formula $ X_j $
+\end_inset
+
+ is not a label]
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $ d_{{FS}_{ij}} > threshold \wedge X_j \notin L $
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ add 
+\begin_inset Formula $ X_j $
+\end_inset
+
+ to C 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDIF
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDFOR
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDFOR
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDFOR
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This procedure results in groups if disjoint labels but can contain overlapping feature-spaces. Labels are clustered based on feature scores, which can be seen as weight of the features impact on the decision about the label. Thus labels in the same cluster share the same features they depend on. Features are only added if they exceed a threshold, to avoid adding unnecessary or disturbing features.
+\end_layout
+
+\end_body
+\end_document

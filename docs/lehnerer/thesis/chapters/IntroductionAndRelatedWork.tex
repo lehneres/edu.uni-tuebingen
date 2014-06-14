@@ -1,0 +1,112 @@
+\chapter{Introduction and Related Work}
+\label{chapter:IntroductionAndRelatedWork}
+	\section{Description of the field}
+	\label{sec:description}
+		Computational biology has become an essential part of modern biology, biochemistry and medicine. Closely related fields like chemoinformatics, immunoinformatics and system biology spread the tools of computational science to many fields of life science. Bioinformatics or computational biology aims to collect, categorize, store and analyze biological systems \cite{Luscombe01}: Some time before the Human Genome Project \cite{human01} biologists became aware of the powerful possibilities of computational science. Successively a huge amount of data, e.g. gene sequences, structural information, interactions and other, data was collected. In the beginning, bioinformatics enabled the storage of those data in databases like SWISSPROT \cite{Bairoch:1996} and the Protein Data Bank (PDB)\footnote{\url{http://www.rcsb.org/pdb/}}. After storing and cataloging data, analyzing steps to discover patterns and structures within the data \cite{Luscombe01} were developed.
+
+		Knowledge discovery in databases (KDD) \cite{Fayyad96fromdata} processes large datasets and aims to discover patterns within the data using statistical methods as well methods from artificial intelligence. It offers deep insight into the data and a better understanding of the underlying  patterns. The process of mining patterns describing the data is called descriptive data mining. On the other hand, predictive data mining allows extracting models and offers methods to classify unseen examples.
+		
+		Unsupervised learning is the task to find patterns like clusters in unlabeled data. Supervised learning refers to the task of learning models to classify labeled data. It maps an instance of features to an output variable called label. Supervised learning can be split into classification and regression analysis. While classification predicts discrete values, regression analysis offers methods to predict continuous target variables. Besides clustering and association rule learning, classification is one of the core areas in data mining. 
+
+		Classification is the process of assigning categories to examples of data \cite{mitchell97}. A common example is the \textit{PlayTennis}-Problem whether to play tennis or not. Given a dataset which maps features like weather or weekday to the decision play tennis or not, the goal is to learn a model predicting this target value using the given features. An example is shown in table \ref{tab:tennis}.
+
+			\begin{table}
+				\begin{center}
+					\begin{tabular}{|c|c|c|}
+						\hline
+						weather & weekday & class \\ 
+						\hline \hline 
+						sunny & Sunday & yes \\ 
+						\hline 
+						sunny & Monday & no \\ 
+						\hline 
+						rain & Sunday & no \\ 
+						\hline 
+					\end{tabular}
+				\caption{Example for classification: Columns describe features, the last column represents the class. The class corresponds to the decision if the user plays tennis or not. Examples are showed in rows.\\ If the tennis court is only available on weekends and the user only plays tennis on sunny days only the first instance will be classified to $yes$, both other instance will be classified to $no$. } 
+				\label{tab:tennis}
+			\end{center}
+		\end{table}
+
+		Amongst others, there are two basic extensions of the task of classification: 1) from a binary to a multi-class classification problem, where more than two categories are available and 2) to a multi-label problem. The latter one is given if an instance is associated with a set of categories (labels) \cite{Tsoumakas07}.
+
+			\paragraph{Definition}
+				Formally, a dataset $D$ can be described as follows: \mbox{$ D= \{(x_i,Y_i) | i=1...|D|\} $}, where each instance $(x_i,Y_i)$ consists of a feature vector $x_i$ and a subset of labels/classes $Y_i\subseteq L$, where $L$ is the full set of labels. Single-label classification is concerned if a class $ \lambda \in L $ is assigned to instances. Binary classification refers to label sets $L$ of cardinality 2 ($|L|=2$), multi-class classification to sets $ |L|>2 $. In both cases classifiers choose out of $|L|$ classes but always only one class $\lambda$ is assigned to an instance. In multi-label classification, a subset $ Y\subseteq L $ is assigned to each instance, therefore a classifier has to choose a set of assigned labels as well as the number of assigned labels. Another aspect of multi-label classification is to produce a ranking of labels along to its relevance to the current example.
+
+			\paragraph{Applications}
+				For instance, pictures mostly match not only one category, but show a combination of different categories like hill, forest, water or beach. Another example would be movies like \textit{Da Vinci Code} which can be categorized as Society\textbackslash Religion and Arts\textbackslash Movies \cite{Tsoumakas07}.
+
+				An application in bioinformatics for multi-label classification is the ToxCast\tm project \cite{Dix07}. The project started in 2007. 320 different chemical structures were tested for toxicological endpoints. About 1600 properties and more than 400 endpoints were examined.
+
+				The goal of this project is to map \textit{in vitro} measured features to \textit{in vivo} observed toxicological endpoints, which is a classic task of classification. Particularly, it is a challenging task for multi-label learning, as the set of toxicological endpoints (400), which refer to labels and the set of features (1600), is quite large. Once this is done, predictions about the toxicity of chemical substances/structures can be made without tedious lab-work or morally questionable animal experiments.
+
+	\section{Motivation}
+		\begin{task}
+			For a dataset \mbox{$ D= \{(x_i,Y_i) | i=1...|D|\} $} with a feature vector $ x_i $, label set \mbox{$ Y_i \subseteq L$}, there exists a subset \mbox{$ L_G \subseteq L $} of all labels and a corresponding subset \mbox{$ X_G \subseteq X $} of features forming a subset of the data \mbox{$ G \subseteq D $} with \mbox{$ G = \{({x_G}_i,{Y_G}_i) | i=1...|G|\} $}, in which attributes have a high internal association.
+		\label{theorem}
+		\end{task}
+
+		In many multi-label applications there exist groups of connected labels and features which come naturally. E.g. in the picture labeling example, it is probable to see combinations of water, beach and island. On the other hand, it is very improbable to see combinations like forests and desert. Another example would be the ToxCast\tm dataset, where it is highly probable to find families of in vitro features connected to a group of similar in vivo endpoints. Therefore, there will be specific features for specific labels. For instance, the blue content of a picture may be important for the label \textit{sea} and \textit{sky}, but irrelevant to other labels like \textit{forests}.
+
+		Based on this assumption, this work aims to develop a method to find sets of labels and corresponding features. Subsequently, multi-label learners can be applied on those sub-datasets. Experiments show that those models achieve better performance in some cases since they can fit to characteristic groups. In addition, subsets representing independent information patterns can be isolated.
+
+		The bachelor thesis is organized as follows: Firstly core components like clustering and feature selection are described. Subsequently, two Feature- and Label-Selection for Multi-Label Classification methods are presented in this work. Finally, it concludes with a presentation of the evaluation and discussion of benefits of these methods.
+
+	\section{Related Work}
+	\label{sec:relatedwork}
+
+		This chapter gives an overview on existing multi-label classification techniques. HOMER is described here, as it uses a similar approach to this work, despite its focus lies on efficiency rather than structural decomposition. 
+		
+		\paragraph{Notation} The following notation is used for describing the multi-label problems: $ D $ is the dataset composed of n examples $ (x_1,Y_1), (x_2,Y_2), \hdots, (x_n,Y_n) $, where $ x_i $ is the instance containing the feature values and $ Y_i \subseteq L $ a subset of labels associated with this instance. A vector $\vec{y_i} = [y_{i_1}\hdots y_{i_L}] = \{0,1\}^L$ is used to describe $Y_i$, where $\vec{y_{i_j}}=1$ if the $j$th label is relevant (otherwise  $\vec{y_{i_j}}=0$). Single labels are annotated with $\lambda_{1\hdots L}$.
+
+			\subsection{Multi-Label Classification Methods}
+			\label{subsec:mlmethods}
+				There are two groups of multi-label classification methods \cite{Tsoumakas07}:
+				\begin{enumerate}
+					\item Transformation-based methods, which transform the problem in to several single-label problems and apply binary classification methods (e.g. SVMs \cite{SVM}, Decision Trees \cite{Quinlan1986}, k-Nearest-Neighbors \cite{mitchell97}). An exception is the Label Powerset method, which transforms the problem to a multi-class classification task. 
+					\item Algorithm-adaptation methods, which extend existing algorithms to be capable of handling multi-label problems directly.
+				\end{enumerate}
+				
+				\subsubsection{Transformation based Methods}
+				\label{subsubsec:transformation}
+					\paragraph{Binary Relevance}
+					\label{para:br}
+						A basic multi-label classification method is Binary Relevance (BR) \cite{Tsoumakas07}. This method transforms the multi-label problem into $ |L| $ separate problems and trains a single-label learner on each on them. The prediction is simply composed by the prediction of the single classifications $ \lambda_1\hdots \lambda_n $. It does not take any dependencies between labels into account. This makes it the simplest multi-label learner. Labels tend to have strong inter-relationships, however, BR does not consider those relationships, thus predictions on a label $ l_i $ have no influence on predictions of other labels $ l_j $. However, it is still popular as it scales linear with the number of labels, thus complexity lies in $ O(|L|) $.
+						
+					\paragraph{Label Powerset}
+					\label{para:lp}
+						The Label Powerset method includes label dependencies but suffers from computational complexity. For every unique set $ Y $ of labels in the data, a class $ l_Y $ is created, representing this combination. Subsequently, and a multi-class classifier is built on the data. Thus, every combination is represented as a single class and label correlations are taken into account directly. Despite the worst-time complexity of $ O(2^{|L|}) $ another disadvantage is that, in its basic form, it can only predict label combinations which are present in the training data.
+					
+					\paragraph{Multi-Label Stacking}
+					\label{para:ms}
+						Multi-label Stacking or $ BR^2 $ deals with the disadvantage of BR by not taking label relations into account \cite{Tsoumakas09}. Therefore, a stacking mechanism is used. The first level of Multi-label Stacking consists of a BR classifier predicting labels independently. A second level incorporates the output of the first level BR classifier, in detail the label confidences. Result is a relation-dependent prediction.	Formally, first step produces a dataset \mbox{$ D'=\{(y_i,Y_i),i=1\hdots |D|)\}$}. The vector $ y_i $ contains all predicted confidences of the base level for all labels $\lambda_{1\hdots |D|}$ of an instance $ i $. Subsequently, for every label a meta level binary classifier is used to classify, resulting in a prediction of $\lambda_{1\hdots |D|}$. To reduce the noise, $\phi$ correlations between all labels in the original data is computed. For the meta level, only labels exceeding the correlation threshold are used. By this, the dimensionality of the feature space in the meta-level and also the noise will be reduced.
+
+					\paragraph{Classifier Chains}
+					\label{para:cc}
+						Classifier Chains by Read \etAl \cite{Read09} handles the label correlations by using a chain of single-label classifiers. Each of them is predicting the labels subsequently, e.g. for every label $ \lambda $ in the label set $ L $ a single-label classifier $C_{1\hdots |D|}$ is trained. Every member in the chain adds feature with the confidence of the prediction for the current label to the feature space. Thus every classifier can use the prediction of the previous labels. The order of the chain influences the performance, nevertheless current implementations are using a random order. The performance can be improved by using ensembles of randomly ordered Classifier Chains.
+
+				\subsubsection{Algorithm-adoption methods}
+				\label{subsubsec:adaption}
+					\paragraph{ML-kNN}
+					\label{para:mlknn}
+						ML-kNN proposed by Min-Ling Zhang and Zhi-Hua Zhou \cite{Zhang05} is an adaption of the k-Nearest-Neighbor algorithm. As first step the $k$ nearest neighbors are calculated, subsequently the label sets are mapped using the maximum-a-posteriori principle (MAP) based on the information gain about the label sets of the neighboring instances. The method is described in more detail in algorithm \ref{algo:mlknn}. Given a dataset \mbox{$ D'=\{(y_i,Y_i),i=1\hdots |D|)\}$} and label set $ L=\lambda_{1\hdots|D|}$, a \textit{membership counting} vector $ \vec{C}_I(l) $ is used representing the number of neighbors of instance $ I $ which are associated with label $\lambda$. $ N(I) $ is the set of the $k$ nearest neighbors of instance $I$. $H^\lambda_1$ is the event that $t$ is associated with label $\lambda$ in contrast $H^\lambda_0$ is the event that $I$ is not associated with label $\lambda$. With $E^\lambda_j:j=0..k$ the event that among the $k$ nearest neighbors are exactly $j$ instances labeled with label $\lambda$.
+With those variables for each instance $i$ a \textit{category vector} $\vec{y}_I(\lambda)$ can be computed where $ \vec{y}_I(\lambda) $ is 1 if $ \lambda $ is among the predicted label set $Y_{I_{pred}} $ for instance $I$. The vector $\vec{r}_I(\lambda)$ is holding numeric values to generate a ordering of the labels in order to predict a ranking instead a fixed label set.
+
+						\begin{algorithm}
+							\begin{algorithmic}
+								\REQUIRE $ I = (x_i,Y_i) \in D $  \COMMENT{input is an instance \ensuremath{I}}
+								\STATE Identify $N(I)$ \COMMENT{identify the \ensuremath{k} nearest neighbors}
+								\FOR[compute for every label:]{$ \lambda \in L $}
+									\STATE $\vec{C}_I(\lambda)=\sum_{a\in N(I)}\vec{y}_{x_a}(\lambda)$ \COMMENT{membership vector}
+									\STATE $\vec{y}_I(\lambda)=\arg\max_{b\in \{0,1\}} P(H^\lambda_b)P(E^\lambda_{\vec{C}_I(\lambda)}|H^\lambda_b)$ \COMMENT{category vector}
+									\STATE $\vec{r}_I(\lambda)=P(E^\lambda_{\vec{C}_I(\lambda)}|H^\lambda_b)$ \COMMENT{category vector with real values for ranking}
+								\ENDFOR
+								\RETURN $\vec{y}_I$ and $\vec{r}_I$
+							\end{algorithmic}
+							\caption{ML-kNN} 
+							\label{algo:mlknn}
+						\end{algorithm}
+
+				\subsubsection{HOMER}
+				\label{subsubsec:homer}					
+					A multi-label learner introduced by Tsoumakas \etAl \cite{Tsoumakas08} called HOMER is based upon a Hierarchy Of Multilabel classifERs. In order to build the hierarchy the label set $L$ is split into $k$ disjoint subsets. This is done recursively for each subset, until the number of remaining labels is $<k$. For every step in the hierarchy, clustering is used to find $k$ clusters of similar labels. To ensure a balanced label distribution for each cluster, a modified cluster algorithm based on k-means, called \textit{balanced k-means}, is used. For the clustering only the label part of data is used. The result is a tree-like hierarchy of $L$ with $L_{root}=L$ and every single label as leaf. A meta-label level rules the path through the hierarchy. An instance $ I $ is annotated with meta-label $\mu_n$ if it is associated with any label of $L_n$. For every internal node, a classifier is trained, predicting current meta-label $\mu_n$. Therefore, only branches with positive meta-labels will be considered for multi-label predicting, reducing the computational costs, because for every branch a classifier has to deal with a much smaller label set. As classifiers have to deal with a much smaller set of labels in each level and only those branches with positive meta-labels are evaluated, a linear training and predicting complexity of $O(log_k(|L|))$ can be achieved.

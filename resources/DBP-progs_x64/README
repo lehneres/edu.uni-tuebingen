@@ -1,0 +1,243 @@
+
+README for DBP-progs v2
+=======================
+
+Pauli Miettinen 16.5.2007
+
+
+Introduction
+------------
+
+DBP-progs is a collection of software that can be used to solve the
+Discrete Basis Problem (DBP) and its variations. Broadly speaking, given a 
+binary matrix, the goal of the Discrete Basis Problem is to represent it as a 
+Boolean product of two smaller binary matrices. A Boolean product of two
+binary matrices is defined as is the standard matrix product, but with
+1 + 1 = 1.
+
+This is version 2 of the package. It includes new applications and Matlab
+files to execute C programs within Matlab. The algorithms are described
+in [1, 3], and partly also in [2]. These are the algorithms that were
+used in [3]. There is a deprecated package (DBP-progs v1) that contains
+the exact algorithm used in [1] and [2], as there is a small difference
+between these two versions.
+
+The package contains one algorithm for DBP, several variations of
+it (explained in [3]), an algorithm for the Discrete Basis Partitioning Problem
+(DBPP) (defined in [1] and [3]), and some utility programs to generate data 
+and ease the use of the algorithms.
+
+All programs are to be used at one's own peril.
+
+
+Changes to previous versions
+----------------------------
+
+There is a small change in the program `asso-solver': selecting the best
+basis vector among candidates did not fully agree with the explanations
+in [1, 2]. As the experiments in [1] and [2] were conducted using this version,
+the old package (named as DBP-progs-v1) is still available. 
+
+Other major differences include programs `iter-postproc' and `iter-solver',
+and all m-files. The code for the other programs is cleaned, too, and the
+error reporting is upgraded. 
+
+
+Contents of the package
+-----------------------
+
+This package contains the following programs:
+o asso-solver
+  - Implements the algorithm `DBP' from [3], or equivalently, the algorithm
+    `Association' from [1] and [2]. Solves DBP.
+o k-medians-solver
+  - Implements the algorithm `LocalSearch' described [1]. Solves DBPP.
+o create-decomp
+  - Implements an exponential-time algorithm to create an optimal decomposition
+    when both data and basis matrices are known. Described in [3].
+o iter-postproc
+  - Implements an iterative local search heuristic to improve the decomposition
+    when dataset, basis vectors, and an initial usage matrix is given.
+    Described in [3].
+o iter-solver
+  - Combines asso-solver and iter-postproc into a single program. Faster
+    than running asso-solver and iter-postproc as separate programs. Same
+    as `DBP+iter' in [3].
+o comparer
+  - Computes the quality of the decomposition with respect to the loss
+    function described in [1-3].
+o mod-matrix
+  - Allows the user to modify the matrix representation between sparse and
+    dense, and to transpose a matrix.
+o cdbp.m
+  - A Matlab program that serves as an interface between Matlab and 
+    asso-solver.
+o cdbpiter.m
+  - A Matlab program that serves as an interface between Matlab and
+    iter-solver.
+o cdbpcluster.m
+  - A Matlab program that solves DBP using clusters. Implements algorithm
+    `DBP+clust' from [3].
+o optmatch.m
+  - A Matlab program that serves as an interface between Matlab and
+    create-decomp.
+
+In addition, the package also contains two sample input files, one in dense
+and other in sparse format. 
+
+
+Requirements
+------------
+
+This package is made for GNU Linux, and it should work in all platforms
+having GNU LibC (glibc, tested with version 2.5), GNU C compiler (gcc, 
+tested with version 4.1.1), and GNU make (tested with version 3.80). The 
+package is also reported to work with Solaris (details unknown), but it will 
+need `libiberty.so' to provide `getopt_long()' (see below). To unpack this 
+package, one also needs tar and gzip. 
+
+Using the m-files naturally requires Matlab (tested with version 7.3.0.298,
+but should work with older versions, too). Also, program `cdbpcluster.m'
+uses k-means clustering from SOM Toolbox (version 2, available from
+<http://www.cis.hut.fi/projects/somtoolbox/>). 
+
+All programs should compile also in 64-bit environment, but only `asso-solver'
+is tested to work.
+
+Usage in non-GNU environments
+-----------------------------
+
+In general, the applications should be portable with small changes to all
+platforms supporting ANSI C. If you do not have gcc or GNU make, you probably 
+have to edit the Makefiles (there is one in each subdirectory, also). 
+If you do not have GNU libc, you have to edit the main Makefile: remove
+text `-D_GNU_SOURCE' from CFLAGS. As a result, the utility functions from
+`util.c.' do not write program name before the error functions, but otherwise
+everything should work fine.
+
+The function `getopt_long()' from glibc is rarely available in other platforms.
+However, all important command-line options have short alternatives, so you 
+should be able to replace `getopt_long()' by `getopt()' without much of 
+troubles (in some cases you need to remove optional arguments, though).
+
+Finally, all programs that need randomness use `/dev/urandom' as a default 
+source of random bits. If your platform does not support this, you can manually
+define the random seed (`-d' command-line option) to make the programs use
+standard `rand()' pseudo-RNG. 
+
+
+Installation
+------------
+
+To install this package, you must at first unpack it. Command
+  tar xvfz DBP-progs.tar.gz
+creates a new directory, `DBP-progs', and unpacks package's contents there.
+To compile the programs, issue `cd DBP-progs && make'. Binaries are located 
+under their respective subdirectories (both `iter-solver' and `iter-postproc'
+are in `iter-solver/'). If you use some other C compiler than gcc, or you want 
+to change compiler flags, you can change appropriate rows at main Makefile, 
+located under `DBP-progs/'.
+
+
+Input data formats
+------------------
+
+All programs accept input in two different formats, namely dense and sparse
+format. For testing purposes, and for human eyes, dense format is more
+convenient, while for real usage, sparse format probably saves a considerable
+amount of disk space. Example inputs in both formats are located under
+`samples' subdirectory. In what follows, spaces and newlines can be replaced
+by any number of blank characters as defined in C standard library (blank
+characters are space, tab, newline, vertical tab, form feed, and carriage 
+return). Rules for the formats are simple: All files are in ASCII format. In 
+both formats, first two lines contain one integer denoting the number of rows 
+and columns in the matrix, respectively. In dense format, the elements of the 
+matrix are then given in row-major format (that is, at first uppermost row, 
+then second row from up etc.). Elements are either 0 or 1 and are separated 
+from each other by a space. In sparse format, only the 1s in the matrix are 
+listed. At first, in each row there is an integer expressing the number of 1s 
+in that row. Directly after that (separated by space, of course) there are the 
+indices of columns in which matrix has 1s. First column is column number 1.
+
+Sample files of both formats are included under `samples/' directory.
+
+The m-files assume standard Matlab matrices. They write dense matrices in
+the disk, even if the input matrix is of sparse type.
+
+
+Limitations
+-----------
+
+Program `asso-solver' should not have any limitations except those set by
+the platform (e.g., the amount of free memory). Programs `iter-solver'
+and `iter-postproc' can only handle cases where the basis size is at
+most the number of bits in C's `long int' type (that is, 32 with 32-bit 
+machines and (usually) 64 with 64-bit machines). This is an implementation
+detail, and should you need larger bases, it should not require too much
+work to change the necessary parts of the code. However, that will probably
+yield to a slower program.
+
+Program `create-decomp' takes exponential time with respect to the basis
+size, being in practice feasible only with moderate basis sizes (less than
+20 or so).
+
+Usage
+-----
+
+A complete list of program's command line arguments is printed when program
+is executed with `--help' command-line argument. This applies to all 
+programs in this package. A sample session might go as follows (outputs 
+omitted).
+
+~$ cd DBP-progs
+~/DBP-progs$ asso-solver/asso-solver -ssamples/dense-matrix.txt \
+  -basso-basis.txt \
+  -Dasso-decomp.txt -t0.9 -k4
+~/DBP-progs$ mod-matrix/mod-matrix -iasso-decomp.txt -oasso-decomp-t.txt -t
+~/DBP-progs$ k-medians-solver/k-medians-solver -ssamples/dense-matrix.txt \
+  -bmed-basis.txt \
+  -omed-decomp.txt -k4
+~/DBP-progs$ iter-solver/iter-postproc -ssamples/dense-matrix.txt \
+  -basso-basis.txt\
+  -Oasso-decomp-t.txt \
+  -Diter-asso-decomp.txt
+~/DBP-progs$ create-decomp/create-decomp -ssamples/dense-matrix.txt \
+  -basso-basis.txt \
+  -Dopti-asso-decomp.txt
+~/DBP-progs$ comparer/comparer -ssamples/dense-matrix.txt \
+  -basso-basis.txt \
+  -Dasso-decomp-t.txt
+~/DBP-progs$ comparer/comparer -ssamples/dense-matrix.txt \
+  -basso-basis.txt \
+  -Diter-asso-decomp.txt
+~/DBP-progs$ comparer/comparer -ssamples/dense-matrix.txt \
+  -basso-basis.txt \
+  -Dopti-asso-decomp.txt
+~/DBP-progs$ comparer/comparer -ssamples/dense-matrix.txt \
+  -bmed-basis.txt \
+  -Dmed-decomp.txt
+
+Program `mod-matrix' has to be used since `asso-solver' returns the 
+decomposition matrix as a transpose. You can also use `mod-matrix' to
+reformat a matrix from dense to sparse format, or vice versa. Both 
+basis and decomposition matrix are printed in dense format.
+
+
+References
+----------
+
+[1]  Pauli Miettinen: The Discrete Basis Problem. Report C-2006-010,
+     Department of Computer Science, University of Helsinki 2006 
+     (M.Sc. Thesis).
+
+[2]  Pauli Miettinen, Taneli Mielikäinen, Aristides Gionis, Gautam Das,
+     and Heikki Mannila: The Discrete Basis Problem. In J. Fürnkranz,
+     T. Scheffer, and M. Spiliopoulou (eds.), Knowledge discovery in
+     databases: PKDD 2006 -- 10th European conference on principles and
+     practice of knowledge discovery in databases, Berlin, Germany,
+     September 2006, Lecture Notes in Artificial Intelligence, 4213, 
+     Springer 2006, pages 335-346.
+
+[3]  Pauli Miettinen, Taneli Mielikäinen, Aristides Gionis, Gautam Das,
+     and Heikki Mannila: The Discrete Basis Problem. Submitted to IEEE
+     Transactions on Knowledge and Data Engineering (extended version of [2]).

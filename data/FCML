@@ -1,0 +1,14 @@
+CfsSubsetEval + GreedyStepwise -> 0.15599 - 0.00718 -> 0.075
+ChiSquaredAttributeEval + Ranker -> 59.14 - 0 -> 1
+GainRatioAttributeEval + Ranker -> 0.1070 - 0 -> 0.003
+InfoGainAttributeEval + Ranker -> 0.0268 - 0  -> 0.003
+ReliefFAttributeEval + Ranker -> 0.06 - -0.03 -> 0.1
+SignificanceAttributeEval + Ranker -> 0.334 - 0 -> 0.05
+SymmetricalUncertAttributeEval + Ranker -> 0.155 - 0 -> 0.005
+
+EM : 10 Cluster
+kMeans : 10 ok
+Hirach : 10 Means ok
+
+-> 5-10-15 cluster size
+-> single, mean, complete, ward

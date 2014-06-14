@@ -1,0 +1,224 @@
+\chapter{Clustering and Feature Selection}
+\label{chap:clusteringandfeatureselection}
+
+	Clustering and feature selection methods are core elements of this work. Thus, this chapter gives an introduction to the field and an overview over the used clustering and feature selection methods.
+
+	\section{Cluster analysis}
+	\label{sec:clustering}
+
+		Cluster analysis or clustering is the task of assigning instances to subsets called clusters which are most similar inside and most dissimilar outside the cluster in respect to some distance or similarity measure. Clustering is an unsupervised method and does not use class information.
+
+		An application for clustering is gene expression analysis. Clustering methods are used to identify groups of genes with higher expression, than other groups. In line with the experiment, one can find families of genes which are correlated, and map co-expressions to diseases or biological pathways.
+
+		Many cluster methods require specifying the number of clusters prior to the process of clustering. This requires knowledge of the underlying structure of the dataset which is often not available or even the goal of the experiment. Cluster methods assign every instance to one particular cluster. However some cluster methods like Expectation Maximization (EM) compute membership probabilities. This is used to create a non-deterministic clustering of the data, allowing assigning cluster instances according to its membership probability.
+
+		There exists methods to evaluate a clustering. One of the most intuitive ones is to assign a class to each instance, separating the desired groups of instances. An optimal cluster method discriminates classes in different clusters. In this work, clustering is evaluated with respect to label dimensions, as density, cardinality and correlation as well to classification evaluation measures like accuracy.
+
+		Clustering will be used in order to find groups of correlated labels in multi-label datasets. Three types of clustering methods have been used.
+
+		\subsection{Clustering Methods}
+		\label{subsec:clustering}
+			\subsubsection{Hierarchical Clustering}
+			\label{subsubsec:hirach}
+				
+				Hierarchical Clustering creates a hierarchy of clusters, either starting from one cluster and splitting, until every instance is its own cluster, called top-down or divisive clustering, or starting with every instance in a separate cluster and merging until all instances remain in one cluster, named bottom-up or agglomerative clustering \cite{Jain99}.
+
+				Agglomerative clustering has a lower computational complexity as divisive clustering because splitting criteria can be computed directly, where most merging criteria need some "look-ahead" procedure. 
+
+				Agglomerative clustering consists of three steps:
+				
+				\begin{enumerate} 
+					\item{Compute a proximity matrix in-between each pair of clusters.}
+					\item{Merge the closest clusters.}
+					\item{Go to Step 1 until a minimum number of clusters are reached, or all instances remain in one cluster}
+				\end{enumerate}
+
+				\paragraph{Linkage criteria}
+					The linkage criteria describes how the distance between clusters is computed. In the following, the linkage criteria used in this work are presented.
+
+					\begin{enumerate}
+						\item{Single linkage is the minimum distance between two clusters \mbox{A and B}
+						\begin{equation}
+							\min \, \{\, d(a,b) : a \in A,\, b \in B \,\}
+						\end{equation}}
+						
+						\item{Complete linkage is the maximum distance between two clusters 	\mbox{A and B}
+						\begin{equation}
+							\max \, \{\, d(a,b) : a \in A,\, b \in B \,\}
+						\end{equation}}
+	
+						\item{Average linkage is the mean distance of all elements in clusters \mbox{A and B}
+						\begin{equation}
+							\tfrac{1}{|A||B|}\sum_{a\in A, b\in B} d(a,b)
+						\end{equation}}
+						
+						\item{Average group linkage is the mean distance of all elements in the junction of clusters \mbox{A and B} (also called Mean Linkage)
+						\begin{equation}
+							\tfrac{1}{(|A|+|B|)(|A|+|B|-1)}\sum_{x,y\in A \cup B} d(x,y)
+						\end{equation}}
+					\end{enumerate}
+
+					\paragraph{Measures}
+					\label{para:measures}
+					
+						For computing the proximity, any metric can be used. Fundamental ones are the Euclidean and Manhattan-Distance (also Taxicab-Distance):
+
+						\begin{eqnarray}
+							D_{\rm Euclidean}(x_i,x_j) :=\sqrt{\sum_{k=1}^p (x_{ik}-x_{jk})^2} \label{eqn:euclidean}\\
+							D_{\rm Manhatten}(x_i,x_j) :=\sum_{k=1}^p |x_{ik}-x_{jk}|				\label{eqn:manhatten}
+						\end{eqnarray}
+
+						Note: $p$ is the length of the vector $x$.
+						
+						The Chebyshev-Distance as the maximum distance of its elements:
+
+						\begin{equation}
+							D_{\rm Chebyshev}(x_i,x_j) := \max_k^p(|x_{ik} - x_{jk}|)
+						\end{equation}
+
+%In this work also the Tanimoto Distance \cite{Tanimoto60} is used. The Tanimoto Distance is an application on binary data, i.e. on sets where objects can be contained or not. It is calculated using the similarity ratio
+%
+%\begin{equation}
+%T_s(x_i,x_j) =  \frac{\sum_k^p ( x_{ik} \land x_{jk})}{\sum_k^p ( x_{ik} \lor x_{jk}))}
+%\end{equation}
+%
+%and a distance measure
+%
+%\begin{equation}
+%D_{Tanimoto}(x_i,x_j) = -{\log} _2 ( T_s(x_i,x_j) ) 
+%\end{equation}
+
+						Some feature selection methods produce a ranking of features. To apply hierarchical clustering on ranked features the Spearman Rank Correlation Coefficient \cite{Myers03} is used:
+
+						\begin{equation}
+							\rho = \frac{\sum_i(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_i (x_i-\bar{x})^2 \sum_i(y_i-\bar{y})^2}}
+						\end{equation}
+
+						Note $x_i$,$y_i$ are ranks, $\bar{x}$, $\bar{y}$ is the mean rank of x, respective y.
+											
+						As there will occur no ties\footnote{multiple elements sharing the same rank}, in this application, a simpler formula introduced by Myers \textit{et. al} can be used \cite{Myers03}:
+						\begin{equation}
+							\rho = 1- {\frac {6 \sum d_i^2}{n(n^2 - 1)}}
+						\end{equation}
+	
+						where $ d_i $ is the difference between the ranks $ d_i = x_i - y_i $ and $ n $ the number of examples.
+
+						Divisive clustering methods like DIANA \cite{Kaufman90} generally have higher computational complexity, thus they are not included in this work. Future work may explore more cluster methods as well as divisive clustering.
+
+					\subsubsection{k-means Clustering}
+					\label{subsubsec:kmeans}
+
+						k-Means is another clustering algorithm based on distance metrics \cite{MacQueen67}. k-Means assigns examples to one of $ k $ clusters, as shown in algorithm \ref{algo:kmeans}.
+
+						\begin{algorithm}
+							\caption{k-means clustering}
+							\label{algo:kmeans}
+							\begin{algorithmic}
+								\STATE init $c_{1..k}$ as cluster centers randomly
+								\WHILE{repeat $ < n $ OR $c_{1..k}$ converge}
+									\STATE (2) assign each example $ x $ to the nearest cluster ($ \min_{i} (d(c_i,x))$), where $d(x,y)$ is any metric
+									\STATE (3) recompute $c_{1..k}$ as the geometric centroid for each cluster
+								\ENDWHILE
+							\end{algorithmic}
+						\end{algorithm}
+
+						After a randomly initialization of $k$ cluster centers, each instance is  assigned to its nearest cluster according to a distance measure. After assigning the instances the cluster center is recomputed. Step 2 \& 3 is repeated at a most $ n $ times or until the center positions converge. To compute the distance $ d(c_i,x) $ one can use any metric. It is faster than the Hierarchical Clustering as it does not need to update a full $n\times n$ distance matrix, but only the distance to the cluster center $ c_i $. However, k-means converges to a local optimum. Solutions can still be improved by re-starts.
+
+					\subsubsection{Expectation Maximization}
+					\label{subsubsec:em}
+
+						The Expectation Maximization Algorithm has been introduced by Demp \textit{et.al} \cite{Demp77}. It is an important tool for statistical analysis. Unlike hierarchical clustering and k-means clustering, EM is a probabilistic clustering algorithm. It models the data as a mixture of distributions. In an iterative process, parameters for those distributions are estimated, in case of a normal distribution those parameters are the expected value $\mu$ and variance $\sigma^2$. Each cluster is represented by one distribution.  The distributions are initiated with randomly selected parameters. In alternating expectation and maximization steps, these parameters are optimized. The expectation step calculates the cluster probability for each instance, and the maximization step estimates the distribution parameters based on the cluster probabilities. Instances are assigned to the cluster with the highest membership probability. The clustering is finished when the log-likelihood of the instances belonging to the clusters saturates.
+
+					\begin{equation}
+						\begin{split}
+							\log \prod_{x_i\in D} likelihood(x_i) = \log \prod_{x_i\in D} \sum_{k\in Cluster} p_kP(x_i|C_k)\\
+= \sum_{k\in Cluster}\log\sum_{k\in Cluster}p_kP(x_i|C_k)
+						\end{split}
+					\end{equation}
+
+					The EM algorithm has the advantage that it does not depend on distance metrics or similarity measures. It also can handle missing values, which would either be ignored or lead to high distances in other methods. On the other hand, its convergence often is suboptimal because it can stuck local optimums. Implementations overcome this problem by re-sampling, needing many EM-steps and increasing computation time.
+
+	\section{Feature Selection}
+	\label{sec:featureselection}
+
+		Datasets are constantly growing in both dimensions: attributes and instances. Thus classification must deal with a high number of possible redundant or irrelevant features \cite{Zheng10}. Those interfering features heavily impact the classifying performance, as they tend to produce over-fitted models. Also, the growing dimensionality of data highly affects the running time of data-mining methods. Feature selection methods try to deal with those features by reducing the feature space and thus optimizing the learning process.
+
+		Unsupervised Feature Selection methods do not use information about the class of the instance. Supervised feature selection methods do take class information into account. Three classes of supervised feature selection methods can be distinguished: Wrappers, Embedded and Filter approaches. Wrappers use a learning scheme to evaluate features, by learning a classifier on a feature set and evaluating the prediction performance. They have high risk of over-fitting the model to the dataset and classifier method. They are also comparatively slow as they need to train a classifier for every evaluation step. Embedded feature selection methods are integrated into a classifying algorithm itself, e.g. decision tree where the nodes are built from the most discriminative features. Filters compute some score for each feature with respect to the class using different measures like e.g. information gain. 
+
+Additionally, filter methods can be divided by their output: Ranking methods and subset evaluators. Ranking methods aim to rank features according to a score and removing those which to not exceed a certain threshold. The second family finds groups of features for the optimal subset but does not evaluate the score of individual features.
+
+Common to all methods is the goal to find features, which produce a good discrimination between classes.
+
+		\subsection{Feature Selection Methods}
+			\label{sub:featureselectionmethods}
+			\subsubsection{Information Gain}
+			\label{subsubsec:infogain}
+
+				Information Gain (IG) \cite{Cover91} is an intuitive and computationally simple evaluation measure. It calculates how much additional information is gained by using a feature $ X $ in respect to a label $ Y $:
+				\begin{equation}
+					IG(X,Y)=H(X)-H(X|Y)
+				\end{equation}
+				$ H $ is the entropy, which is a measure of uncertainty within a random variable.
+				\begin{eqnarray}
+					H(X)=-\sum \limits_{i}P(x_i) \log_2(P(x_i))\\
+					H(X|Y) = -\sum \limits_{j}P(x_j)\sum \limits_{i}P(x_i|y_i) \log_2(P(x_i|	y_i))
+				\end{eqnarray}
+				
+				Information Gain is the value by which the uncertainty of a label $ Y $ is \mbox{in-/decreased} when an additional feature $ X $ is added. A higher value indicates a higher relevance of the feature $ X $. Information Gain is a univariate evaluation measure i.e. it does not take combinations of features into account.
+
+			\subsubsection{Relief}
+			\label{subsubsec:relief}
+			
+				Relief is an univariate filtering approach introduced by Kira and Rendell \cite{Kira92}. Its score is defined as shown in equation \ref{eq:relief}. A distance measure $ d(x) $ is used to compute the distance of a instance $ I $ in a set of randomly selected $ p $ instances, and its nearest neighbors with same class $f_{NH}$ (near hit) and different class $f_{NM}$ (near miss) according to the feature value $ f_i $.
+			
+				\begin{equation}
+					\label{eq:relief}
+						SC_R(f_i)=\frac{1}{2}\sum\limits_{t=1}^{p}d(f_{t,i}-f_{NM(x_t),i})-d(f_{t,i}-f_{NH(x_t),i})
+				\end{equation}
+
+				Thus the feature is weighted by its ability to distinguish between classes. The score will increase if the distance to the closest neighbor with the same class is small and the distance to the closest neighbor with a different class  is large.
+
+			\subsubsection{Correlation based Feature Selection}
+			\label{subsubsec:CFS}
+			
+				The Correlation based Feature Selection (CFS) method is based on the idea that good feature subsets contain features which are highly correlated with the label, and yield low correlation to each other. In order to find the best feature subset a merit score for each subset is computed:
+				
+				\begin{equation}
+					Merit_S=\frac{k\overline{r_{cf}}}{\sqrt{k+k(k-1){\overline{r_{ff}}}}}
+				\end{equation}
+
+				$ k $ is the number of features, the mean correlation of the feature set is:
+	
+				\begin{equation}
+					\overline{r_{cf}} = \sum \limits_{f_i\in S} \frac{1}{k}\sum cor(f_i,c) 
+				\end{equation}
+
+				and $\overline{r_{ff}}$ is the average correlation of features: 
+				
+				\begin{equation}
+					\overline{r_{ff}} = \sum \limits_{f_i\in S} \frac{1}{k}\sum\limits_{f_j\in S} cor(f_i,f_j)
+				\end{equation}
+
+				Note that the correlation $ cor(f_i,c) $ and respective $ cor(f_i,f_j) $ use a normalized Information Gain measure called Symmetrical Uncertainty.
+
+			\subsubsection{Other Feature Selection Methods}
+			\label{subsubsec:other}
+
+			This work uses two more methods were for evaluation of different feature selection methods which are described briefly in the following:			
+			
+			\paragraph{Symmetric  Uncertainty}			
+			\label{para:symuncert}
+				Symmetric Uncertainty is based on the uncertainty coefficient (equation \ref{eqn:uncert}) \cite{Press88} which is closely related to information gain. $C_{XY}$ and $C_{YX}$ must not be necessarily equal, therefore, symmetrically uncertainty (equation \ref{eqn:symu}) \cite{Witten2005} computes the weighted average of the two uncertainty coefficients :
+
+				\begin{equation}
+				\label{eqn:uncert}
+					C_{XY}=\frac{IG(X;Y)}{H(Y)} ~~~~\mbox{and}~~~~ C_{YX}=\frac{IG(X;Y)}{H(X)}
+				\end{equation}
+				\begin{equation}
+				\label{eqn:symu}
+					U(X,Y) = 2 \frac{I(X;Y)}{H(X)+H(Y)}
+				\end{equation}
+
+			\paragraph{Significance Attribute Evaluation}
+			\label{para:sigattreval}
+				Significance Attribute Evaluation \cite{Ahmad2004} is based on the idea that there is a strong possibility that instances with complementary values will belong to complementary classes. The significance is computed as a two-way function of the association of an attribute to the class decision.

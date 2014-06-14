@@ -1,0 +1,103 @@
+\chapter{Feature and Label Selection for Multi-Label Classification}
+\label{chapter:main}
+
+	Purpose of this work is to develop and evaluate methods for splitting multi-label datasets into subsets. Two general approaches have been developed:
+	\begin{enumerate}
+		\item{Cluster based Splitting: using a transposed dataset for clustering, clusters resolve directly into groups}
+		\item{Feature- and Cluster based Splitting: clustering is performed on feature selection results and merged into groups.}
+	\end{enumerate}
+
+	A group is a dataset containing only a subset of attributes which can be features or labels from the original dataset. It can be seen as a vertical cutting of the dataset. In the following both methods will be explained in more detail.
+
+	\section{Cluster based splitting}
+	\label{sec:CML}
+
+		CML transposes the dataset $ D $ into a dataset $ D^T $ where every attribute column $ A = X \cup L $ becomes an instance of $ D^T $. In the next step, a cluster algorithm is applied to the dataset $ D^T $, resulting in clusters containing attributes of $ D $.
+		
+		Thus label values are binary, in contrast to the features which can be numeric values, a preprocessing step normalizes all values.
+
+		In the clusters, similar features and labels are combined. With respect to the clustering method, the similarity measure will be a distance metric used by hierarchical clustering and k-means, or a probability distribution as used by EM. Attributes in the same cluster have a higher dependence between the cluster members than to the rest of the dataset.
+
+		Attributes can be split into features and labels, forming subsets $ D_{1\hdots|N|} \subset D $ of the entire dataset $ D $, where $N$ is the number of clusters. On each subset $ D_{1\hdots|N|}$  a multi-label learner is trained and predictions for the subsets of labels are taken together to get a prediction of the entire label set.
+		
+		The procedure of training and predicting is shown in algorithm \ref{algo:CMLtraining} and \ref{algo:CMLpredicting}.
+		
+		
+		\begin{algorithm}
+			\begin{algorithmic}	
+				\REQUIRE dataset $ D= \{(x_i,Y_i) | i=1...|D|\} $
+				\STATE $ D^T \gets transpose(D) $ \COMMENT{transposing the dataset}
+				\STATE $ C \gets cluster(D^T) $ \COMMENT{clustering the data, \ensuremath{C} is the set of clusters}
+				\STATE $ D^T_{1\hdots N} \gets split(D^T,C)$ \COMMENT{creating subsets of the data by splitting the feature and label space according to the clusters \ensuremath{C}}
+				\STATE $ F_{1\hdots N} \gets train(D^T_{1\hdots N})$ \COMMENT{training $N$ multi-label learner \ensuremath{F_{1\hdots N}} on the subsets}
+			\end{algorithmic}
+		\caption{CML: training on dataset $D$}
+		\label{algo:CMLtraining}
+		\end{algorithm}
+		
+		\begin{algorithm}
+			\begin{algorithmic}	
+				\REQUIRE $ I $ as unseen instance from $D$
+				\REQUIRE $ C $ as clusters from training \\
+				\REQUIRE $ F_{1\hdots N} $ trained multi-label learner for data subsets
+				\STATE $ I_{1\hdots |N|} \gets split(I,C) $ \COMMENT{split instance according to the clusters of attributes}
+				\FOR{$k=1 \to |N|$} 
+					\STATE $ \vec{v_k} \gets F_k(I_k) $ \COMMENT{prediction of particular label subsets}
+				\ENDFOR
+				\RETURN $ \vec{v} \gets compose(v_{1\hdots |N|})$ \COMMENT{composing vectors \ensuremath{v_{1\hdots |N|}} into a single vector}
+			\end{algorithmic}
+		\caption{CML: predicting on dataset $D$}
+		\label{algo:CMLpredicting}
+		\end{algorithm}
+
+	\section{Feature- and Cluster based Splitting}
+	\label{sec:FCML}
+
+		As first method, CML is based on the raw attribute values and it cannot qualify attributes with respect to a label. CML groups attributes which are sharing common values among the instances, but does not take into account their relevance to each other.
+
+		A second method, called FCML, was developed, in order to overcome this shortcoming. FCML takes into account the relevance of attributes in respect to a label by availing feature selection methods.
+
+		For every label $ \lambda \in L $ of the dataset \mbox{$ D= \{(x_i,Y_i) | i=1...|D|\} $}, a feature selection is performed as described in section \ref{sec:featureselection}. The result is a matrix $ D_{FS}=(x_{ij})_{i=1..l,j=1..m} $ where every row $ i $ represents a label, every column $ j $ represents an attribute, which can be a feature or a label, and $ x_{ij} $ is the score computed by the feature selection. 
+
+		Subsequently, a cluster method is applied. Note that instances in $ D_{FS} $ represent labels of $ D $, so every cluster $c$ is a partition of $ L $. Features are added if their score within any instance $I \in c$ exceeds a threshold. 
+
+		This procedure results in sets of disjoint labels but may contain overlapping feature-spaces. Splitting the dataset along those attribute sets creates groups which can be trained by a multi-label learner.
+		
+		Labels are clustered based on feature scores, which can be seen as weight of the features impact on the decision about the label. Thus, labels in the same cluster share the same designating features. Features are only added if they exceed a threshold, to avoid adding unnecessary or disturbing features, with more restrictive thresholds to concentrate on few high influencing features.
+		
+		The procedure of feature selection and clustering is showed in algorithm \ref{algo:fcml_fcs} and \ref{algo:fcml_clustering}.
+
+		\begin{algorithm}
+			\caption{FCML: FeatureSelection} 
+			\label{algo:fcml_fcs}
+			\begin{algorithmic}
+			\REQUIRE dataset $ D= \{(x_i,Y_i) | i=1...|D|\} $			
+			\STATE $ l \gets |X\cup L| $ as the number of attributes
+			\STATE $ m \gets |D| $ as number of instances
+			\STATE $ D_{FS} \gets \mathbb R^{l\times m} $ as empty $l\times m$ matrix
+			\FORALL[feature selection for all labels]{$ \lambda_i \in L $} 
+				\STATE $ d_{{FS}_i} \gets (score_{\lambda_iX_1},...,score_{\lambda_iX_l}) \gets 		featureSelection(\lambda_i) $ \COMMENT{feature selection for \ensuremath{\lambda_i} outputs a vector with scores for every attribute \ensuremath{X_{1\hdots l}}}
+			\ENDFOR
+			\RETURN $ D_{FS} $
+			\end{algorithmic}
+		\end{algorithm}
+
+		\begin{algorithm}
+			\caption{FCML: Clustering} 
+			\label{algo:fcml_clustering}
+			\begin{algorithmic}
+				\REQUIRE $ D_{FS} $ matrix with scores for each label/attribute combination
+				\STATE $ C \gets cluster(D_{FS}) $ \COMMENT{clustering on the feature selection score matrix}
+				\REQUIRE $ G \gets C$ as set of groups, initialized with the labels taken together by clusters
+				\FORALL[clusters]{ $ c \in C $ } 
+					\FORALL[instances in cluster \ensuremath{c} (labels)]{ $ \lambda_i \in c $ }
+						\FORALL[attributes in score vector (attributes)] { $ X_j \in d_{{FS}_i} $ }
+							\IF[only if $ X_j $ is not a label]{ $ d_{{FS}_{ij}} > threshold \wedge X_j \notin L $ }
+								\STATE add $ X_j $ to c
+							\ENDIF
+						\ENDFOR
+					\ENDFOR
+				\ENDFOR
+				\RETURN $ G $ groups containing subsets of labels and features
+			\end{algorithmic}
+		\end{algorithm}

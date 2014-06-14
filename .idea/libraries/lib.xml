@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/gridSearch.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mulan-src.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/meka.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/weka-src.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/weka.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/chiSquaredAttributeEval.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mulan.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/probabilisticSignificanceAE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/partialLeastSquares.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

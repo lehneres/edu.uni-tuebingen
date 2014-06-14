@@ -1,0 +1,14 @@
+\chapter{Conclusions}
+\label{chapter:Conclusions}
+
+	This work aims to find subgroups of labels and features in multi-label classification. It was expected to gain a significant enhancement of predicting performance. This claim could not be yet verified in its entirety.
+
+	However, results show that a splitting is possible without losing label information. Also small improvements in predicting true negative labels could be shown. Label dependencies in multi-label problems are still under research. Current work \cite{cheng10icmlmld} shows that label dependencies may have to be considered in even more detail than done so far.
+
+	For identifying label groups, clustering methods are used. To enhance the clustering, feature selection algorithms have been applied, increasing the focus on attribute relations. For this, different cluster and feature-selection methods were evaluated. A framework for group-based multi-label classification has been implemented using the MULAN Java Library.
+
+	The idea of this work suffered from the complexity of its components, clustering and feature selection. Future work must aim to analyze the effects of the numerous parameters in more detail, than it could be done in the limited time of the bachelor thesis. Finding the ideal number of clusters is still subject of research in the field of unsupervised clustering. For example, the datasets could be evaluated in terms of density, label distribution and label correlation. Also, it would be a  beneficial to find a rule to specify the number of clusters $nc$ dependent to the label space. In addition, the feature selection process could be evaluated in more detail.
+
+	Also, it seems to be promising to develop some horizontal splitting, where groups are not only subsets of attributes but also subsets of instances with high specificity to certain label (sub)sets. New bi-clustering algorithms seem to be a suitable solution for this task.
+
+	In conclusion, first steps towards for Label- and Feature-Selection in Multi-Label Classification were taken. Due to time limitations not all aspects of involved methods could yet be treated in full detail, which may achieve improved performance. However, this work may serve as a starting point to future work in Label and Feature Selection in Multi-Label Classification.

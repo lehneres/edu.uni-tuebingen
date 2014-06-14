@@ -1,0 +1,103 @@
+#LyX file created by tex2lyx 2.0.0
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass scrbook
+\options bibtotoc,idxtotoc,headsepline,footsepline,footexclude,BCOR12mm,DIV11
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 12
+\spacing single
+\use_hyperref 0
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+
+Conclusion
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "chapter:Conclusion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This work aims to find subgroups of labels and feature in multi-label problems. Doing so, it had been expected to gain a significant enhancement of predicting performance. This claim could not be yet verified in its entirety.
+\end_layout
+
+\begin_layout Standard
+
+However results show that a splitting is possible without loosing label information. Also small improvements in predicting absent labels could be shown. Label dependencies in multi-label problems are still under research and current work 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "cheng10icmlmld"
+
+\end_inset
+
+ shows that label dependencies may have to be considered even more complex and informative as it had done till now.
+\end_layout
+
+\begin_layout Standard
+
+For finding label groups clustering methods have used. To enhance the clustering feature selection algorithms have been applied, increasing the focus of clustering on attribute-relations. For this different cluster and feature-selection methods have been evaluated. A framework for group-based multi-label classification has been implemented using the MULAN Java Library.
+\end_layout
+
+\begin_layout Standard
+
+The idea of this work starved from the complexity of involved parts of clustering and feature selection. Future work must aim to analyse the effects of the numerous parameters in more detail as it could be down in the limited time of the bachelor thesis. Finding the ideal number of clusters is still object of research in the field of unsupervised clustering. For example the splitted datasets could be evaluated in terms of density, label distribution and label correlation. Also it would be a great benefit to find some rule to specify the number of clusters 
+\begin_inset Formula $nc$
+\end_inset
+
+ in some relation to the label-space. In addition the feature-selection process could be evaluated in more detail.
+\end_layout
+
+\begin_layout Standard
+
+Also it seems to be promising to develop some horizontal splitting, so groups are not only clustered attributes but also subsets of instances with high specificity to certain label-(sub)sets. Modern bi-clustering algorithm seem to be a bright solution to that task.
+\end_layout
+
+\begin_layout Standard
+
+In conclusion first steps in Label- and Feature-Selection in Multi-Label Classification were successfully made. Due time limits not all aspects of involved methods could yet be treated in full detail which may lead to better performance. However this work may act as base to future work in Label- and Feature-Selection in Multi-Label Classification.
+\end_layout
+
+\end_body
+\end_document

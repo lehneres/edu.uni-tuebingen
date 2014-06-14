@@ -1,0 +1,4912 @@
+#LyX file created by tex2lyx 2.0.0
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass scrbook
+\options bibtotoc,idxtotoc,headsepline,footsepline,footexclude,BCOR12mm,DIV11
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 12
+\spacing single
+\use_hyperref 0
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+
+Experiments
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "chapter:Experiments"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This chapter shows implementation details of this work. Datasets and evaluation measures used in this work are also presented here. In the last part of this chapter results of the used of clustering and feature-selection methods as well results for the complete method are showed.
+\end_layout
+
+\begin_layout Section
+
+Implementation
+\end_layout
+
+\begin_layout Standard
+
+All methods are written in Sun Java Version 6
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.java.com/en/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+. As basic library MULAN
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://mulan.sourceforge.net/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is used 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "mulan"
+
+\end_inset
+
+. MULAN is a java library for multi-label learning based on the WEKA
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.cs.waikato.ac.nz/
+\begin_inset space ~
+
+\end_inset
+
+ml/weka/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ machine learning software 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "weka"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Graphics 
+	filename classdiagramm.png
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+class diagram showing the implementation structure of this work: own classes are grey, white boxes represent classes taken from MULAN. Most important input and output features are showed. Drawn through line indicate a "extends"-relationship, dashed lines a "used-by"-relationship.
+\begin_inset Newline newline
+\end_inset
+
+Main object is the GroupBasedMetaClassifier as it holds the subsets of the data "groups" and the multi-label classifier as well the single-label classifier. For every group a FilteredMLLearner is used to extract the group subset from the dataset. For finding the groups either CML oder FCML is used.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "img:classDiag"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+In 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "img:classDiag"
+
+\end_inset
+
+ a class diagram of the implementation structure is showed. 
+\shape italic
+MultiLabelLearnerBase
+\shape default
+ is the base class for all multi-label learner within MULAN. For transformation based learners, as described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "mlmethods"
+
+\end_inset
+
+ a additional class called 
+\shape italic
+TransformationBasedMultiLabelLearner
+\shape default
+ provides additional specifications as the specification of a single label learner. Remember, transformation based methods transform a multi-label problem into single label problems and apply a single label learning method. 
+\shape italic
+TransformationBasedMultiLabelLearner
+\shape default
+ itself is a child of 
+\shape italic
+MultiLabelLearnerBase
+\shape default
+. The methods in this work are categorized as "meta-learner" as they do not solve the learning task itself but alter the dataset. However, the meta-learner is placed into the 
+\shape italic
+TransformationBasedMultiLabelLearner
+\shape default
+-branch as it transforms the problem into smaller sub-problems. The learner is called 
+\shape italic
+GroupBasedMLLearner
+\shape default
+. It refers to a learner called 
+\shape italic
+FilteredMLLearner
+\shape default
+ which acts as preprocessing step and filters the data by given feature and label attributes. Therefore only the subset containing the specified feature and label attributes will be passed by 
+\shape italic
+FilteredMLLearner
+\shape default
+ to the actual multi-label learner. MULAN specifications enforce datasets to contain at least 2 labels. As in the group-finding process, groups with only one label may be found, a additional WEKA single label learner has to be forwarded to the 
+\shape italic
+FilteredMLLearner
+\shape default
+. 
+\shape italic
+GroupBasedMLLearner
+\shape default
+ can use two classes for finding the groups: 
+\shape italic
+CML
+\shape default
+ and 
+\shape italic
+FCML
+\shape default
+. The classes implement the clustering based and feature- and clustering based methods as described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "CML"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "FCML"
+
+\end_inset
+
+. 
+\shape italic
+FMCL
+\shape default
+ and 
+\shape italic
+CML
+\shape default
+ only return the found groups as indexes of attributes, all filtering, transferring to multi-label learner and prediction is done by 
+\shape italic
+GroupBasedLearner
+\shape default
+. It also contains a method to ensure the entire dataset is passed to the learners, by searching for labels not contained in a group. If labels are found which are not member of a group, an additional group is added containing the missed labels and all features. Also, groups which doesn't contain a label, will be ignored. Current methods only provide groups with disjunct labels. Anyway, 
+\shape italic
+GroupBasedLearner
+\shape default
+ implements a prediction method, which can combine different votes for the same label. This is done by evaluating the "strongest" vote by the distance to a undetermined vote (confidence of 0.5). 
+\shape italic
+GroupBasedLearner
+\shape default
+ also offers some methods for calculating statistics on datasets, like density or cardinality. All implementations provide full compatibility to MULAN.
+\end_layout
+
+\begin_layout Section
+
+Multi-Label Datasets
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:datasets"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This section present datasets used for evaluation. A dataset dimension is described as 
+\begin_inset Formula $ N \times L \times N$
+\end_inset
+
+ where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the number of instances, 
+\begin_inset Formula $ L $
+\end_inset
+
+ the number of labels and 
+\begin_inset Formula $ M $
+\end_inset
+
+ the number of features. 
+\shape italic
+Bibtex
+\shape default
+ and 
+\shape italic
+Delicious
+\shape default
+ are very large datasets in both labelset size and number of instances. This leads to very long computational time, therefore those datasets where only tested with a small number of settings.
+\end_layout
+
+\begin_layout Standard
+
+In table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "datasets"
+
+\end_inset
+
+ all datasets used in this work are presented. Additionally to their dimensions and type, the label-cardinality (
+\begin_inset Formula $LCard$
+\end_inset
+
+) and -density (
+\begin_inset Formula $LDens$
+\end_inset
+
+) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas07"
+
+\end_inset
+
+ of the dataset are shown. Both values measure the distribution of labels associated with a instance. 
+\begin_inset Formula \begin{equation}
+	\label{LCard}
+	LCard(\mathcal D)=\frac{\sum_{i=1}^N|y_i|}N
+\end{equation}
+\end_inset
+
+ 
+\shape italic
+Label Cardinality
+\shape default
+ (
+\begin_inset Formula $LCard$
+\end_inset
+
+) as showed in equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "LCard"
+
+\end_inset
+
+ is the average number of labels associated with each instance. 
+\begin_inset Formula \begin{equation}
+	\label{LDens}
+	LDens(\mathcal D)=\frac 1N LCard(\mathcal D)
+\end{equation}
+\end_inset
+
+ 
+\shape italic
+Label Density
+\shape default
+ (
+\begin_inset Formula $LDens$
+\end_inset
+
+) as showed in equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "LDens"
+
+\end_inset
+
+ is the average fraction of the label space associated with a instance. 
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+Multilabel datasets used in this work. 
+\begin_inset Formula $n$
+\end_inset
+
+ indicates numeric features, 
+\begin_inset Formula $b$
+\end_inset
+
+ binary features
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "datasets"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+
+\begin_inset Tabular 
+<lyxtabular version="3" rows="6" columns="7">
+<features>
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $N$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $L$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $M$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $LCard$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $LDens$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+type 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Yeast 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+2417 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+14 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $103n$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+4.24 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+0.30 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+biol.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Medical 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+978 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+45 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $1449b$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+1.25 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+0.03 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+text 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Enron 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+1702 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+53 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $1001b$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+3.38 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+0.06 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+text 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Bibtex 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+7395 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+159 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $1836b$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+2.40 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+0.02 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+text 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Delicious 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+16105 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+983 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+
+\begin_inset Formula $500b$
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+19.02 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+0.02 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+text 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+In the following used datasets are described in some more detail.
+\end_layout
+
+\begin_layout Standard
+
+
+\shape italic
+Yeast
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "DBLP:conf/nips/ElisseeffW01"
+
+\end_inset
+
+ is a small biological dataset mapping genes to subsets of 14 different biological function.
+\end_layout
+
+\begin_layout Standard
+
+
+\shape italic
+Medical
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Pestian07w.:a"
+
+\end_inset
+
+ had been created for the Computational Medicine Centers 2007 Medical Natural Language Processing Challenge
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.computationalmedicine.org/challenge/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+. The instances are compiled out of brief medical reports containing symptom and their prognosis labelled with insurance codes.
+\end_layout
+
+\begin_layout Standard
+
+
+\shape italic
+Enron
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "read:2008"
+
+\end_inset
+
+ is a subset of the the Enron e-mail corpus
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://bailando.sims.berkeley.edu/enron/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ hierarchically labled with categories by the UC Berkley Enron Email Analysis Project
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://bailando.sims.berkeley.edu/enronemail.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+
+\shape italic
+Delicios
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas08"
+
+\end_inset
+
+ is a collection from the 
+\shape italic
+del.ico.us
+\shape default
+ social bookmarking site
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://del.ico.us
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+. Every posted site on this bookmarking site is annotated with different tags. Tsoumakas 
+\shape italic
+et. al
+\shape default
+ filtered the set of overall 22139 tags to 983 frequent tags. In a second steps a boolean bag-of-word model for each bookmarked site was created and associated with the tags. In contrast to most other multilabel datasets in this context labels were known prior to the feature space (bag-of-word model).
+\end_layout
+
+\begin_layout Section
+
+Evaluation Measures
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:EvalMeasures"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+Evaluation in multi-label dimensions is different to evaluation in single-label cases: Latter is the simple decision if a prediction of a single class is right or wrong. This results in a confusion matrix and measures like specificity (true negatives of all negatives) and sensitivity (true positives of all positives).
+\end_layout
+
+\begin_layout Standard
+
+For multi-label problem a strict right/wrong evaluation criteria would be very harsh as prediction of label sets would be counted as wrong if any false positive or false negative occurs. As a result additional measures for multi-label prediction were introduced.
+\end_layout
+
+\begin_layout Standard
+
+There are two general fashions of multi-label evaluation measures: example-based measures where each label set, or predicted example is evaluated separately and label-based measures which are evaluating the binary relevance of each label individually 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "citeulike:8938538"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+A transfer of the classic single label 
+\shape italic
+accuracy
+\shape default
+ into multi-label application inducts a measure called 
+\begin_inset Formula $SubsetAccuracy(\mathcal{D})$
+\end_inset
+
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "SubsetAccuracy"
+
+\end_inset
+
+) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Ghamrawi05collectivemultilabel"
+
+\end_inset
+
+ as a example-based measure. 
+\begin_inset Formula $HammingLoss(\mathcal{D})$
+\end_inset
+
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "hammingloss"
+
+\end_inset
+
+) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Schapire00boostexter:a"
+
+\end_inset
+
+ would be the label-based equivalent. 
+\begin_inset Formula $\hat{y_i}\Delta y_i$
+\end_inset
+
+ is the symmetrical difference between 
+\begin_inset Formula $\hat{y_i}$
+\end_inset
+
+ and 
+\begin_inset Formula $y_i$
+\end_inset
+
+ where 
+\begin_inset Formula $y_i$
+\end_inset
+
+ respectively 
+\begin_inset Formula $\hat{y_i}$
+\end_inset
+
+ is real or predicted value for label 
+\begin_inset Formula $Y_i$
+\end_inset
+
+ (eg. 0 or 1).
+\end_layout
+
+\begin_layout Paragraph*
+
+Example-based Evaluation Measures
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{SubsetAccuracy}
+	SubsetAccuracy(\mathcal{D}) = \frac{1}{N} \sum_{i_1}^{N} 1_{\hat{y_1}=y_1}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{hammingloss}
+	HammingLoss(\mathcal{D}) = \frac{1}{NL} \sum_{i_1}^{N} |\hat{y_1}\Delta y_1|
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+Additionally other classic single label measures where rendered for multi-label use 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Godbole04discriminativemethods"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{Precision}
+	Precision(\mathcal{D}) = \frac{1}{N} \sum_{i_1}^{N} \frac{|\hat{y_i}\vee y_1|}{|\hat{y_i}|}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{Recall}
+	Recall(\mathcal{D}) = \frac{1}{N} \sum_{i_1}^{N} \frac{|\hat{y_i}\vee y_1|}{|y_i|}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{F-Measure}
+	F-Measure(\mathcal{D}) = \frac{1}{N} \sum_{i_1}^{N} \frac{2|\hat{y_i}\vee y_1|}{|\hat{y_i}|+|y_i|}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{Accuracy}
+	Accuracy(\mathcal{D}) = \frac{1}{N} \sum_{i_1}^{N} \frac{|\hat{y_i}\vee y_1|}{|\hat{y_i}\wedge y_1|}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+
+Label-based Evaluation Measures
+\end_layout
+
+\begin_layout Standard
+
+For label-based evaluation measures any known binary evaluation measure can be used. The only difference is the averaging process as multi-label application offer two ways of averaging: 
+\shape italic
+macro-averaging
+\shape default
+ and 
+\shape italic
+micro-averaging
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Yang99anevaluation"
+
+\end_inset
+
+. A binary evaluation 
+\begin_inset Formula $ M(tp,tn,fp,fn)$
+\end_inset
+
+ uses the number of true positives (
+\begin_inset Formula $tp$
+\end_inset
+
+), true negatives (
+\begin_inset Formula $tn$
+\end_inset
+
+), false positives and false negatives (
+\begin_inset Formula $fp$
+\end_inset
+
+ and 
+\begin_inset Formula $fn$
+\end_inset
+
+) as input. Those numbers can be averaged up using following methods:
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{mmacro}
+	M_{macro}=\frac{1}{L}\sum_{i=1}^L M({tp}_i,{tn}_i,{fp}_i,{fn}_i)
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{mmacro}
+	M_{micro}=\frac{1}{L} M(\sum_{i=1}^L {tp}_i,\sum_{i=1}^L {tn}_i,\sum_{i=1}^L {fp}_i,\sum_{i=1}^L {fn}_i)
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+
+Evaluating of Clustering- and Feature Selection Methods
+\end_layout
+
+\begin_layout Standard
+
+In order to gain best results for CML (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "CML"
+
+\end_inset
+
+) or FCML (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "FCML"
+
+\end_inset
+
+) a ideal cluster-method or feature-selection method had to be selected. Several algorithms and combinations had been evaluated, each by a 5-fold cross-validation on various datasets. The numerous parameters for both, clustering and feature selection lead to a very high number of evaluations with partially very long run times. For computing over 
+\begin_inset Formula $30.000$
+\end_inset
+
+ different settings were computed at the BIMComputeCluster
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.bioinformatik-muenchen.de/studium/students/bim-compute-cluster
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ and the Linux-Cluster at the Leibniz-Rechenzentrum
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.lrz.de/services/compute/linux-cluster/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+
+Clustering
+\end_layout
+
+\begin_layout Standard
+
+Clustering is important for the performance of FCML and CML. This section shows different evaluation settings for clustering and its results.
+\end_layout
+
+\begin_layout Standard
+
+For distance-based cluster methods such as hierarchical clustering (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:hirach"
+
+\end_inset
+
+) and simple k-means (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:kmeans"
+
+\end_inset
+
+) a additional chose of a distance metric is required. Those methods also need the number of clusters to be specified. Hierarchical clustering needs furthermore the linkage criteria to be given. This results in a very high number of evaluation settings. To average cluster performance different feature-selection methods and cluster sizes as well varying datasets are used.
+\end_layout
+
+\begin_layout Paragraph*
+
+CML
+\end_layout
+
+\begin_layout Standard
+
+In figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cml_clus"
+
+\end_inset
+
+ clustering results for CML are showed. EM is outperformed by distance-based cluster methods. The EM algorithm is based on the Maximum-Likelihood-Principle, though for this application hard distance measures have advantages for the use as similarity measure for attributes. Regarding the distance measures, the 
+\shape italic
+Chebyshev
+\shape default
+ distance shows disadvantages, while 
+\shape italic
+Euclidean
+\shape default
+ and 
+\shape italic
+Manhattan
+\shape default
+ distances seem to equally performant. Latter ones are more sensitive to differences in many values, but less sensitive single large differences. 
+\shape italic
+Chebyshev
+\shape default
+ only regards the maximum distance between two instances, therefore it is very receptive to outliers. Considering hierarchical cluster methods, 
+\shape italic
+single, complete
+\shape default
+ and 
+\shape italic
+average
+\shape default
+ linkage show equal performance. 
+\shape italic
+Mean
+\shape default
+ has a average accuracy which is about 15% lower. Note that 
+\shape italic
+Chebyshev
+\shape default
+ does not have a disadvantage in a 
+\shape italic
+mean
+\shape default
+ linkage scenario. 
+\shape italic
+Mean
+\shape default
+-linkage also is very sensitive to outliers, as the distance to every other instance is summed up.
+\end_layout
+
+\begin_layout Paragraph*
+
+FCML
+\end_layout
+
+\begin_layout Standard
+
+More detailed results for FCML are showed in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fcml_clus"
+
+\end_inset
+
+. In comparison to CML EM does not show a significant disadvantages versus distance-based cluster methods. Note, FCML does use scores received from a feature-selection method. Those scores are expectable to be distributed along any probability distribution. In the 
+\shape italic
+medical
+\shape default
+ dataset EM yet shows some improvement against hierarchical and k-means clustering. Despite this exception, no overall "best-performing" cluster method could be determined. A closer look to the hierarchical clustering is done in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fcml_clus_detail"
+
+\end_inset
+
+. One can see again, there are no significant differences in either, distance measure or cluster method.
+\end_layout
+
+\begin_layout Standard
+
+To overcome this problem of missing a standard setting which is working well for every scenario, a ranking for each scenario (dataset & multi-label learner) has been created. Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:cal500"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:enron"
+
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:medical"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:yeast"
+
+\end_inset
+
+ show the top 3 settings for the datasets 
+\shape italic
+cal500
+\shape default
+, 
+\shape italic
+enron
+\shape default
+, 
+\shape italic
+medical
+\shape default
+ and 
+\shape italic
+yeast
+\shape default
+. Settings differ between datasets but 
+\shape italic
+HierarchicalClusterer
+\shape default
+ using single-linkage is among all top 3 results, therefore further evaluation will use this setting.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\size scriptsize
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular 
+<lyxtabular version="3" rows="5" columns="6">
+<features>
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+toprule
+\end_layout
+
+\end_inset
+
+ rank 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+multi-label learner 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+feature-selection method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+cluster algorithm 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+cluster method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+distance measure 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ #1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+SimpleKMeans 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+ManhattanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+#2 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+SINGLE 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+ChebyshevDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+#3 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+SINGLE 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+EuclideanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size scriptsize
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+\size scriptsize
+
+ranking in dataset 
+\shape italic
+CAL500
+\shape default
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size scriptsize
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:cal500"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\size tiny
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular 
+<lyxtabular version="3" rows="5" columns="6">
+<features>
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+toprule
+\end_layout
+
+\end_inset
+
+ rank 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+multi-label learner 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+feature-selection method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+cluster algorithm 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+cluster method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+distance measure 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ #1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SINGLE 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SpearmanCoefficient 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+#2 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+MEAN 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SpearmanCoefficient 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+#3 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+COMPLETE 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SpearmanCoefficient 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+\size tiny
+
+ranking in dataset 
+\shape italic
+enron
+\shape default
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:enron"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\size tiny
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular 
+<lyxtabular version="3" rows="5" columns="6">
+<features>
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+toprule
+\end_layout
+
+\end_inset
+
+ rank 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+multi-label learner 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+feature-selection method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+cluster algorithm 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+cluster method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+distance measure 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ #1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SimpleKMeans 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+EuclideanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+#2 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SimpleKMeans 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ManhattanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+#3 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SINGLE 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ManhattanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+\size tiny
+
+ranking in dataset 
+\shape italic
+medical
+\shape default
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:medical"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\size tiny
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular 
+<lyxtabular version="3" rows="5" columns="6">
+<features>
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+toprule
+\end_layout
+
+\end_inset
+
+ rank 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+multi-label learner 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+feature-selection method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+cluster algorithm 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+cluster method 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+distance measure 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+midrule
+\end_layout
+
+\end_inset
+
+ #1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SimpleKMeans 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+EuclideanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+#2 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SimpleKMeans 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ManhattanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+#3 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ClassifierChain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+InfoGainAttributeEval 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HierarchicalClusterer 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+SINGLE 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+ManhattanDistance 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+bottomrule
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+\size tiny
+
+ranking in dataset 
+\shape italic
+yeast
+\shape default
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\size tiny
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:yeast"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Graphics 
+	filename ../figures/cml_cluster.pdf
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+different cluster algorithm on CML
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cml_clus"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_cluster.pdf
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+different cluster algorithm on FCML
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fcml_clus"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+subfigure[different cluster methods]{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_clus_meth.pdf
+	width 47text%
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+subfigure[different distance measures]{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_clus_dist.pdf
+	width 47text%
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+details on FCML using hierarchical clustering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fcml_clus_detail"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph*
+
+Number of clusters
+\end_layout
+
+\begin_layout Standard
+
+Finally the parameter "number of cluster" has to be determined. The number of clusters (
+\begin_inset Formula $nc$
+\end_inset
+
+) can range from at least 2 to 
+\begin_inset Formula $|L|$
+\end_inset
+
+ which results in each label to be clustered in a single cluster. Therefore 
+\begin_inset Formula $nc$
+\end_inset
+
+ is highly depend on the dataset where 
+\begin_inset Formula $|L|$
+\end_inset
+
+ is between 14 (
+\shape italic
+yeast
+\shape default
+) and 983 (
+\shape italic
+delicious
+\shape default
+).
+\end_layout
+
+\begin_layout Standard
+
+To find a rule for determining 
+\begin_inset Formula $nc$
+\end_inset
+
+ several attempts to find correlation to evaluation measures like 
+\shape italic
+accuracy
+\shape default
+ or 
+\shape italic
+ label-density
+\shape default
+. Representative figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:clu_cor"
+
+\end_inset
+
+ shows the result for the setting "ClassifierChain, Hierarchical Clustering, single-linkage, Euclidean Distance, InformationGain" on the dataset 
+\shape italic
+CAL500
+\shape default
+. In table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:clu_cor"
+
+\end_inset
+
+ a correlation matrix between the measures 
+\shape italic
+Example-based Accuracy
+\shape default
+, 
+\shape italic
+Micro-averaged F-Measure
+\shape default
+, 
+\shape italic
+Hamming-Loss
+\shape default
+ and 
+\shape italic
+avgDensity
+\shape default
+, which is the averaged density over all clusters as well the average labels per cluster and the number of clusters itself. The matrix shows poor correlation, with an exception on "Hamming-Loss" to "avgDensity". As the best value in Hamming-Loss is 0, performance seems to decrease with higher average density. However, the reason for this relationship could not be covered in this work due time limits.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Graphics 
+	filename ../figures/cluster_corl.pdf
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+"ClassifierChain, Hierarchical Clustering, single-linkage, Euclidean Distance, InformationGain" 
+\shape italic
+CAL500
+\shape default
+ dataset with different 
+\begin_inset Formula $nc$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:clu_cor"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\size tiny
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+centering
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Tabular 
+<lyxtabular version="3" rows="7" columns="7">
+<features>
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<column alignment="right" valignment="top">
+<row>
+<cell alignment="right" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+Accuracy 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+F-Measure 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HammingLoss 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+density 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+labels per cluster 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+number of clusters 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+Accuracy 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,9947954 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,424270532 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,2623 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,195886517 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,4528997 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+F-Measure 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,365183815 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,214 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,208032488 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+-0,47366346 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+HammingLoss 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,78642 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,063797033 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,23463825 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+Density 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,105946326 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,11426926 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+Labels per cluster 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+1 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+0,02183881 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+number of clusters 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\size tiny
+
+1 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:addlabel"
+
+\end_inset
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+\size tiny
+
+Pearson-correlation matrix for setting "ClassifierChain, Hierarchical Clustering, single-linkage, Euclidean Distance, InformationGain" 
+\shape italic
+CAL500
+\shape default
+ dataset with different 
+\begin_inset Formula $nc$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+Feature-Selection
+\end_layout
+
+\begin_layout Standard
+
+As FCML (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "FCML"
+
+\end_inset
+
+) does use feature-selection methods to compute scores/ranks for every attribute, the configuration of the feature-selection scenario is crucial to the learning and prediction process. Here some work to determine the optimal feature-selection method is presented.
+\end_layout
+
+\begin_layout Standard
+
+To isolate effects of ranking, respectively scores within the group determination, any threshold is set to minimum, which means groups only differ in the label subsets but contain always all features. To evaluate the feature-selection process a clusterer is needed. To reduce the influence of good or bad clustering, various different cluster methods and parameter were used. In conclusion the performance of the FCML method is averaged.
+\end_layout
+
+\begin_layout Standard
+
+To reduce the number of evaluation two scenarios where considered: First five feature selection methods were evaluated on one dataset, namely 
+\shape italic
+CAL500
+\shape default
+. The results are showed in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fscal"
+
+\end_inset
+
+. Although 
+\shape italic
+CfsSubsetEval
+\shape default
+ shows a tiny improvement (
+\begin_inset Formula $ <1\% $
+\end_inset
+
+) against the other methods none statistically significant superior method could be determined.
+\end_layout
+
+\begin_layout Standard
+
+In a second scenario varying datasets using three different feature-selection methods were evaluated: 
+\shape italic
+Relief
+\shape default
+, 
+\shape italic
+CFS
+\shape default
+ and 
+\shape italic
+Information Gain
+\shape default
+ because they represent non-relative solution approaches. Results as showed in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fs"
+
+\end_inset
+
+ point out that CFS can out-value both other methods only in the 
+\shape italic
+medical
+\shape default
+ dataset. Regardless Hamming-Loss shows no improvement.
+\end_layout
+
+\begin_layout Standard
+
+As there could not appointed a superior feature-selection method for further evaluation 
+\shape italic
+information gain
+\shape default
+ is used for its simplicity. However it computes mutual certainty for a pair of attributes what satisfies into the claim that groups consist of attributes which have strong mutual associations. 
+\shape italic
+Information gain
+\shape default
+ has also advantages in computing time, therefore it allows more settings to be evaluated. Nevertheless, further evaluating and parameter optimization could lead to better results on certain datasets.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Graphics 
+	filename ../figures/five_fs.pdf
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+Feature-Selection Methods on the 
+\shape italic
+CAL500
+\shape default
+ dataset
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fscal"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_fs.pdf
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+
+\shape italic
+Relief
+\shape default
+, 
+\shape italic
+CFS
+\shape default
+ and 
+\shape italic
+Information Gain
+\shape default
+ on different datasets
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fs"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+Evaluation of methods
+\end_layout
+
+\begin_layout Standard
+
+In the following results from CML and FCML are presented. Note that CML was developed and tested prior to FCML, therefore datasets and evaluation technique may differ. Due time limits it wasn't possible to repeat tests for CML with new datasets.
+\end_layout
+
+\begin_layout Subsubsection
+
+CML
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Graphics 
+	filename ../figures/cml_results.pdf
+	width 100text%
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+CML compared to pure multi-label learners
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fs"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+In this section results of the CML method compared to pure multi-label learners are showed. If needed a Support-Vector Machine (SMO) was used. As described before a hierarchical clustering with euclidean distance measure and single-linkage was used. For 
+\begin_inset Formula $nc$
+\end_inset
+
+ different number of clusters (2, 4, 6) where chosen. For results the best 
+\begin_inset Formula $nc$
+\end_inset
+
+ was taken. All evaluation was done by a 5-fold cross-validation.
+\end_layout
+
+\begin_layout Standard
+
+Although nearly every scenario shows similar results for CML and the pure learner, performance of MlKNN could be improved in every case.
+\end_layout
+
+\begin_layout Standard
+
+Roughly MlKNN computes distances between instances and assigns to a query instance the major label-set of the k-nearest neighbours using a maximum-a-posteriori principle. Filtering the label space can enhance this MAP-principle as the elements of the output label-space are very related and therefore MAP probabilities are likely to be high.
+\end_layout
+
+\begin_layout Standard
+
+In summery CML can enhance performance of multi-label learners in some cases, but in average CML has the same performance as its pure multi-label scheme.
+\end_layout
+
+\begin_layout Subsubsection
+
+FCML
+\end_layout
+
+\begin_layout Standard
+
+Results for FCML are shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fcml_res"
+
+\end_inset
+
+. For every scenario (dataset + multi-label learner), all possible number of clusters 
+\begin_inset Formula $nc$
+\end_inset
+
+ has been computed and the best performance is presented. To reduce the complexity of parameters, feature selection has been run without threshold, e.g. groups always contain every feature. HOMER uses a parameter 
+\begin_inset Formula $k$
+\end_inset
+
+ used for the number of clusters at each hierarchical level. For every scenario 
+\begin_inset Formula $k=2..8$
+\end_inset
+
+ has been evaluated and again the best result is presented. However, HOMER did not finish in every scenario due memory limits or other reasons
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+IndexOutOfBounds-Exception during JAVA runtime
+\end_layout
+
+\end_inset
+
+ In addition for every scenario a pure multi-label learner has been trained.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+\align center
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+subfigure[Example-based Accuracy]{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_acc.pdf
+	width 80text%
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+subfigure[Micro-averaged F-Measure]{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_fmeasure.pdf
+	width 80text%
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+subfigure[Hamming Loss]{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics 
+	filename ../figures/fcml_hamming.pdf
+	width 80text%
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+FCML compared to pure multi-label learners and HOMER. HOMER did not finish on all scenarios
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fcml_res"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+FCML does not show superior results in Example-based Accuracy. Merely Hamming Loss could be reduced in some cases. Still pure MlKNN could be enhanced in some cases: 
+\shape italic
+enron
+\shape default
+, 
+\shape italic
+medical
+\shape default
+, 
+\shape italic
+bibtex
+\shape default
+. HOMER performs better in almost any case but MlKNN on 
+\shape italic
+bibtex
+\shape default
+. Best results for FCML in this scenario are achieved with 
+\begin_inset Formula $nc=158$
+\end_inset
+
+ what is a clustering of every label into a sole cluster.
+\end_layout
+
+\begin_layout Standard
+
+In terms of Hamming Loss or Micro-Averaged F-Measure FCML can achieve small enhancements to the pure and HOMER multi-label learner. Both Hamming Loss and Micro-Averaged F-Measure take False Positives into account, as accuracy doesn't. That indicates that FCML has slightly better performance in predicting absent labels compared to pure and HOMER. By reducing the label-space and therefore reducing the influences of other labels, non-relevant and misleading signals are eliminated.
+\end_layout
+
+\begin_layout Standard
+
+It's a common problem to determine the effect of 
+\begin_inset Formula $nc$
+\end_inset
+
+ on the performance as different multi-label learners perform best on very different 
+\begin_inset Formula $nc$
+\end_inset
+
+: For example the bibtext dataset with 
+\begin_inset Formula $|L|=158$
+\end_inset
+
+, where Classifier Chains have the best result with 
+\begin_inset Formula $nc=8$
+\end_inset
+
+, MlKNN 
+\begin_inset Formula $k=158$
+\end_inset
+
+ and MultiLabel-Stacking with 
+\begin_inset Formula $nc=14$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+
+Summary
+\end_layout
+
+\begin_layout Standard
+
+Results show that a clustering of labels into different groups and splitting the dataset according to those label-sets does not cause a lower predicting performance. Even very strong splitting where every label falls into a sole cluster may enhance the performance, what indicates that inter-label-relations are very low. Prediction of absent labels could be slightly enhanced by reducing the noise in the label-space by grouping them into smaller subsets.
+\end_layout
+
+\end_body
+\end_document

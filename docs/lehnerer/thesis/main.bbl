@@ -1,0 +1,176 @@
+\begin{thebibliography}{10}\raggedright
+
+\bibitem{Ahmad2004}
+{\sc A.~Ahmad {\rm and} L.~Dey}, {\em A feature selection technique for
+  classificatory analysis}, PhD thesis, Indian Institute of Technology, October
+  2004.
+
+\bibitem{Bairoch:1996}
+{\sc A.~Bairoch {\rm and} R.~Apweiler}, {\em The SWISS-PROT protein sequence
+  data bank and its new supplement TREMBL}, Nucleic Acids Res, 24(1), 1996,
+  pp.~17--21.
+
+\bibitem{SVM}
+{\sc C.~Cortes {\rm and} V.~Vapnik}, {\em Support-vector networks}, Machine
+  Learning, 20(3), 1995, pp.~273--297.
+
+\bibitem{Cover91}
+{\sc T.~M. Cover {\rm and} J.~A. Thomas}, {\em Elements of Information Theory},
+  John Wiley \& Sons. Inc., Hoboken, NJ, US, 1991.
+
+\bibitem{cheng10icmlmld}
+{\sc K.~Dembczy{\'n}ski, W.~Waegeman, W.~Cheng, {\rm and} H.~E.}, {\em On label
+  dependence in multi-label classification}, in Workshop Proceedings of
+  Learning from Multi-Label Data, 2010, pp.~5--12.
+
+\bibitem{Demp77}
+{\sc A.~P. Dempster, N.~M. Laird, {\rm and} D.~B. Rubin}, {\em Maximum
+  Likelihood from Incomplete Data via the EM Algorithm}, Journal of the Royal
+  Statistical Society Series B (Methodological), 39(1), 1977, pp.~1--38.
+
+\bibitem{Dix07}
+{\sc D.~J. Dix, K.~A. Houck, M.~T. Martin, A.~M. Richard, R.~W. Setzer, {\rm
+  and} R.~J. Kavlock}, {\em The ToxCast program for prioritizing toxicity
+  testing of environmental chemicals.}, Toxicological Scienes, 95(1), 2007,
+  pp.~5--12.
+
+\bibitem{DBLP:conf/nips/ElisseeffW01}
+{\sc A.~Elisseeff {\rm and} J.~Weston}, {\em A kernel method for multi-labeled
+  classification}, in Advances in Neural Information Processing Systems, 2001,
+  pp.~681--687.
+
+\bibitem{Fayyad96fromdata}
+{\sc U.~Fayyad, G.~Piatetsky-shapiro, {\rm and} P.~Smyth}, {\em From data
+  mining to knowledge discovery in databases}, AI Magazine, 17, 1996,
+  pp.~37--54.
+
+\bibitem{Ghamrawi05collectivemultilabel}
+{\sc N.~Ghamrawi {\rm and} A.~Mccallum}, {\em Collective multilabel
+  classification}, in Proceedings of the 14th ACM international conference on
+  Information and knowledge management, 2005, pp.~195--200.
+
+\bibitem{Godbole04discriminativemethods}
+{\sc S.~Godbole {\rm and} S.~Sarawagi}, {\em Discriminative Methods for
+  Multi-Labeled Classification}, in Proceedings of the 8th Pacific-Asia
+  Conference on Knowledge Discovery and Data Mining, 2004, pp.~22--30.
+
+\bibitem{weka}
+{\sc M.~Hall, E.~Frank, G.~Holmes, B.~Pfahringer, R.~Reutemann, {\rm and} I.~H.
+  Witten}, {\em The {WEKA} data mining software: an update}, SIGKDD
+  Explorations, 11(1), 2009, pp.~10--18.
+
+\bibitem{human01}
+{\sc {International Human Genome Sequencing Consortium}}, {\em Initial
+  sequencing and analysis of the human genome}, Nature, 409(6822), 2001,
+  pp.~860--921.
+
+\bibitem{Jain99}
+{\sc A.~K. Jain, M.~N. Murty, {\rm and} P.~J. Flynn}, {\em Data Clustering: A
+  Review}, ACM Computing Surveys, 31, 1999, pp.~264--323.
+
+\bibitem{Kaufman90}
+{\sc l.~Kaufman {\rm and} P.~J. Rousseeuw}, {\em Finding Groups in Data An
+  Introduction to Cluster Analysis}, Wiley Interscience, New York, NY, USA,
+  1990.
+
+\bibitem{Kira92}
+{\sc K.~Kira {\rm and} L.~A. Rendell}, {\em A Practical Approach to Feature
+  Selection}, in Ninth International Workshop on Machine Learning, 1992,
+  pp.~249--256.
+
+\bibitem{Luscombe01}
+{\sc N.~M. Luscombe, D.~Greenbaum, {\rm and} M.~Gerstein}, {\em What is
+  Bioinformatics? A Proposed Definition and Overview of the Field}, Methods of
+  Information in Medicine, 40(4), 2001, pp.~346--358.
+
+\bibitem{MacQueen67}
+{\sc J.~B. MacQueen}, {\em Some Methods for Classification and Analysis of
+  MultiVariate Observations}, in Proceedings of the fifth Berkeley Symposium on
+  Mathematical Statistics and Probability, 1967, pp.~281--297.
+
+\bibitem{mitchell97}
+{\sc T.~M. Mitchell}, {\em Machine Learning}, McGraw-Hill, Inc., New York, NY,
+  USA, 1st~ed., 1997.
+
+\bibitem{Myers03}
+{\sc J.~L. Myers {\rm and} A.~D. Well}, {\em Research Design and Statistical
+  Analysis}, Lawrence Erlbaum Associates, London, UK, 2ncs~ed., 2003.
+
+\bibitem{Pestian07w.:a}
+{\sc J.~Pestian, C.~Brew, P.~Matykiewicz, D.~J. Hovermale, K.~B. Cohen, {\rm
+  and} D.~Wlodzuslaw}, {\em A shared task involving multi-label classification
+  of clinical free text}, in BioNLP '07 Proceedings of the Workshop on BioNLP
+  2007: Biological, Translational, and Clinical Language Processing, 2007,
+  pp.~97--104.
+
+\bibitem{Press88}
+{\sc W.~H. Press {\rm and} F.~B. P.}, {\em Numerical Recipes in C: The Art of
+  Scientific Computing}, Cambridge University Press, New York, NY, USA,
+  2nd~ed., 1988.
+
+\bibitem{Quinlan1986}
+{\sc J.~R. Quinlan}, {\em Induction of Decision Trees}, Machine Learning, 1,
+  1986, pp.~81--106.
+
+\bibitem{read:2008}
+{\sc J.~Read}, {\em A Pruned Problem Transformation Method for Multi-label
+  classification}, in Proceedings of the New Zealand Computer Science Research
+  Student Conference, 2008, pp.~143--150.
+
+\bibitem{citeulike:8938538}
+{\sc J.~Read}, {\em Scalable Multi-label Classification}, PhD thesis,
+  University of Waikato, September 2010.
+
+\bibitem{Read09}
+{\sc J.~Read, B.~Pfahringer, G.~Holmes, {\rm and} E.~Frank}, {\em Classifier
+  Chains for Multi-label Classification}, in Proceedings of the European
+  Conference on Machine Learning and Knowledge Discovery in Databases: Part II,
+  2009, pp.~254--269.
+
+\bibitem{Schapire00boostexter:a}
+{\sc R.~E. Schapire {\rm and} Y.~Singer}, {\em BoosTexter: A Boosting-based
+  System for Text Categorization}, Machine Learning, 39, 2000, pp.~135--168.
+
+\bibitem{Tsoumakas09}
+{\sc G.~Tsoumakas, A.~Dimou, E.~Spyromitros-Xioufis, V.~Mezaris,
+  I.~Kompatsiaris, {\rm and} I.~Vlahavas}, {\em Correlation-Based Pruning of
+  Stacked Binary Relevance Models for Multi-Label Learning}, in Proceedings of
+  the 1st International Workshop on Learning from Multi-Label Data, 2009,
+  pp.~101--116.
+
+\bibitem{Tsoumakas07}
+{\sc G.~Tsoumakas {\rm and} I.~Katakis}, {\em Multi Label Classification: An
+  Overview}, International Journal of Data Warehousing and Mining, 3(3), 2007,
+  pp.~1--13.
+
+\bibitem{Tsoumakas08}
+{\sc G.~Tsoumakas, I.~Katakis, {\rm and} I.~Vlahavas}, {\em Effective and
+  Efficient Multilabel Classification in Domains with Large Number of Labels},
+  in Proceedings ECML/PKDD 2008 Workshop on Mining Multidimensional Data, 2008.
+
+\bibitem{mulan}
+{\sc G.~Tsoumakas, E.~Spyromitros-Xioufis, J.~Vilcek, {\rm and} I.~Vlahavas},
+  {\em Mulan: A Java Library for Multi-Label Learning}, Journal of Machine
+  Learning Research, 12, 2011, pp.~2411--2414.
+
+\bibitem{Witten2005}
+{\sc I.~H. Witten, E.~Frank, {\rm and} M.~A. Hall}, {\em Data mining :
+  Practical Machine Learning Tools and Techniques}, Morgan Kaufmann Publishers
+  Inc., San Francisco, CA, USA, 3rd~ed., 2011.
+
+\bibitem{Yang99anevaluation}
+{\sc Y.~Yang}, {\em An evaluation of statistical approaches to text
+  categorization}, Journal of Information Retrieval, 1(1/2), 1999, pp.~67--88.
+
+\bibitem{Zhang05}
+{\sc M.~Zhang {\rm and} Z.~Zhou}, {\em A k-nearest neighbor based algorithm for
+  multi-label classification}, in IEEE International Conference on Granular
+  Computing, 2005, pp.~718--721.
+
+\bibitem{Zheng10}
+{\sc Z.~Zhao, F.~Morstatter, S.~Sharma, S.~Alelyani, A.~Anand, {\rm and}
+  H.~Liu}, {\em Advancing Feature Selection Research - {ASU} Feature Selection
+  Repository}, tech. rep., School of Computing, Informatics, and Decision
+  Systems Engineering, Arizona State University, 2010.
+
+\end{thebibliography}

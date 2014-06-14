@@ -1,0 +1,24 @@
+\BOOKMARK [0][-]{section*.1}{Abstract}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Introduction and Related Work}{}% 2
+\BOOKMARK [1][-]{section.1.1}{Description of the field}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.2}{Motivation}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.3}{Related Work}{chapter.1}% 5
+\BOOKMARK [2][-]{subsection.1.3.1}{Multi-Label Classification Methods}{section.1.3}% 6
+\BOOKMARK [0][-]{chapter.2}{Clustering and Feature Selection}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Cluster analysis}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.1.1}{Clustering Methods}{section.2.1}% 9
+\BOOKMARK [1][-]{section.2.2}{Feature Selection}{chapter.2}% 10
+\BOOKMARK [2][-]{subsection.2.2.1}{Feature Selection Methods}{section.2.2}% 11
+\BOOKMARK [0][-]{chapter.3}{Feature and Label Selection for Multi-Label Classification}{}% 12
+\BOOKMARK [1][-]{section.3.1}{Cluster based splitting}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.2}{Feature- and Cluster based Splitting}{chapter.3}% 14
+\BOOKMARK [0][-]{chapter.4}{Experiments}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Implementation}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{Multi-Label Datasets}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.3}{Evaluation Measures}{chapter.4}% 18
+\BOOKMARK [1][-]{section.4.4}{Evaluation of Clustering- and Feature Selection Methods}{chapter.4}% 19
+\BOOKMARK [2][-]{subsection.4.4.1}{Clustering}{section.4.4}% 20
+\BOOKMARK [2][-]{subsection.4.4.2}{Feature-Selection}{section.4.4}% 21
+\BOOKMARK [2][-]{subsection.4.4.3}{Evaluation of methods}{section.4.4}% 22
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 23
+\BOOKMARK [0][-]{chapter*.50}{Bibliography}{}% 24

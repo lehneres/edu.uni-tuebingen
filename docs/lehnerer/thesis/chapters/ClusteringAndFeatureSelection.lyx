@@ -1,0 +1,1366 @@
+#LyX file created by tex2lyx 2.0.0
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass scrbook
+\options bibtotoc,idxtotoc,headsepline,footsepline,footexclude,BCOR12mm,DIV11
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 12
+\spacing single
+\use_hyperref 0
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+
+Clustering and Feature Selection
+\end_layout
+
+\begin_layout Standard
+
+Clustering and Feature Selection methods are a key elements of this work. Thus this chapter gives an introduction in the field and an overview of the used clustering and feature selection methods.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "chapter:ClusteringAndFeatureSelection"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+
+Cluster analysis
+\end_layout
+
+\begin_layout Standard
+
+Cluster analysis or clustering is the task of assigning instances to subsets (clusters) which are most similar within and most asimilar outside the cluster in respect to some distance or similarity measure. Clustering is a unsupervised method and does not use class information.
+\end_layout
+
+\begin_layout Standard
+
+A application for clustering is gene expression analyse. Cluster methods are used to identify group of genes with higher expression then other. In subject to the experiment one can find families of genes which are correlated, and map there co-expression to some diseases or biological pathways.
+\end_layout
+
+\begin_layout Standard
+
+Many cluster methods require to specify the number of clusters prior to the process of clustering. This requires knowledge of the underlying structure of the dataset which is often not available or even goal of the experiment. To address this problem extensive studies on the effect of different number of clusters were done which will be discussed later.
+\end_layout
+
+\begin_layout Standard
+
+Cluster methods assign every instance to one particular cluster. However some cluster methods like Expectation Maximisation (EM) compute membership probabilities. This is used to create non-deterministic clusterings of the data, allowing to assign cluster to instances according to its membership probability.
+\end_layout
+
+\begin_layout Standard
+
+There exist methods to evaluate the clustering, one of the most intuitive ones is to assign a class label to each instance, separating the desired groups of instances. A optimal cluster methods should discriminate this class labels each to a single cluster. In this work clustering is evaluated in respect to label dimensions, as density, cardinality and correlation as we aim to find cluster with high correlated labels.
+\end_layout
+
+\begin_layout Standard
+
+Clustering will be used for finding groups of correlated labels in multi-label datasets. Therefore three types of clustering methods have been used:
+\end_layout
+
+\begin_layout Subsection
+
+Clustering Methods
+\end_layout
+
+\begin_layout Subsubsection
+
+Hierarchical Clustering
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:hirach"
+
+\end_inset
+
+ Hierarchical Clustering generates a hierarchy of clusters, either starting from one cluster and splitting until every instance is its own cluster (top-down), or starting with every instance in it's own cluster and merging until all instances remain in one cluster (bottom-up) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Jain99"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+The agglomerative (bottom-up) attempts computational complexity is lower then divisive attempt (top-down) because splitting criteria can be computed directly, where most merging criteria need some "look-ahead" procedure.
+\end_layout
+
+\begin_layout Standard
+
+Agglomerative clustering consists of three steps: 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Compute a proximity matrix in-between each pair of clusters.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Merge the closest clusters.
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Go to Step 1 until a minimum number of clusters is reached, or all instances remain in one cluster
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Paragraph
+
+Linkage criteria
+\end_layout
+
+\begin_layout Standard
+
+The linkage criteria describe how the distance between clusters is computed. In the following the linkage criteria used in this work are presented.
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Single linkage is the minimum distance between two clusters 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+A and B
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula \begin{equation}
+\min \, \{\, d(a,b) : a \in A,\, b \in B \,\}
+\end{equation}
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Complete linkage is the maximum distance between two clusters 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+A and B
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Formula \begin{equation}
+\max \, \{\, d(a,b) : a \in A,\, b \in B \,\}
+\end{equation}
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Average linkage is the mean distance of all elements in clusters 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+A and B
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula \begin{equation}
+\tfrac{1}{|A||B|}\sum_{a\in A, b\in B} d(a,b)
+\end{equation}
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+Average group linkage is the mean distance of all elements in the junction of clusters 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+A and B
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ (also called Mean Linkage) 
+\begin_inset Formula \begin{equation}
+\tfrac{1}{(|A|+|B|)(|A|+|B|-1)}\sum_{x,y\in A \cup B} d(x,y)
+\end{equation}
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Paragraph
+
+Measures
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Distance"
+
+\end_inset
+
+ For assigning the proximity any metric can be used. Very basic ones are the Euclidean and Manhattan-Distance (also Taxicab-Distance)
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{eqnarray}
+D_{\rm Euclidean}(x_i,x_j) :=\sqrt{\sum_{k=1}^p (x_{ik}-x_{jk})^2} \label{eqn:euclidean}\\
+D_{\rm Manhatten}(x_i,x_j) :=\sum_{k=1}^p |x_{ik}-x_{jk}|\label{eqn:manhatten}
+\end{eqnarray}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+And the Chebyshev-Distance as the maximum distance of its elements:
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+D_{\rm Chebyshev}(x_i,x_j) := \max_k^p(|x_{ik} - x_{jk}|)
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%In this work also the Tanimoto Distance 
+\backslash
+cite{Tanimoto60} is used. The Tanimoto Distance is an application on binary data, i.e. on sets where objects can be contained or not. It is calculated using the similarity ratio
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+begin{equation}
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%T_s(x_i,x_j) =  
+\backslash
+frac{
+\backslash
+sum_k^p ( x_{ik} 
+\backslash
+land x_{jk})}{
+\backslash
+sum_k^p ( x_{ik} 
+\backslash
+lor x_{jk}))}
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+end{equation}
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%and a distance measure
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+begin{equation}
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%D_{Tanimoto}(x_i,x_j) = -{
+\backslash
+log} _2 ( T_s(x_i,x_j) ) 
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+%
+\backslash
+end{equation}
+\end_layout
+
+\begin_layout Standard
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+For applying hierarchical clustering on ranked features the Spearman Coefficient 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Myers03"
+
+\end_inset
+
+ is used:
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\rho = \frac{\sum_i(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_i (x_i-\bar{x})^2 \sum_i(y_i-\bar{y})^2}}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+As there will occur no ties
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+multiple elements sharing the same rank
+\end_layout
+
+\end_inset
+
+ in this application no ties will occur a simpler formula introduced by Myers 
+\shape italic
+et. al
+\shape default
+ can be used 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Myers03"
+
+\end_inset
+
+: 
+\begin_inset Formula \begin{equation}
+\rho = 1- {\frac {6 \sum d_i^2}{n(n^2 - 1)}}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+where 
+\begin_inset Formula $ d_i $
+\end_inset
+
+ is the difference between the ranks 
+\begin_inset Formula $ d_i = x_i - y_i $
+\end_inset
+
+ and 
+\begin_inset Formula $ n $
+\end_inset
+
+ the number of examples.
+\end_layout
+
+\begin_layout Standard
+
+Divisive clustering methods like DIANA 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Kaufman90"
+
+\end_inset
+
+ generally have higher computational complexity, therefore they are not included in this work. Future work may explore more cluster methods as well divisive clustering.
+\end_layout
+
+\begin_layout Subsubsection
+
+k-means Clustering
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:kmeans"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+k-Means is another clustering algorithm based on distance metrics 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "MacQueen67"
+
+\end_inset
+
+. k-Means assigns examples to one of 
+\begin_inset Formula $ k $
+\end_inset
+
+ clusters given following algorithm:
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+k-means clustering
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "kMeans"
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+begin{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ init 
+\begin_inset Formula $c_{1..k}$
+\end_inset
+
+ as cluster center randomly 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+WHILE
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+repeat 
+\begin_inset Formula $ < n $
+\end_inset
+
+ OR 
+\begin_inset Formula $c_{1..k}$
+\end_inset
+
+ converge
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ (2) assign each example 
+\begin_inset Formula $ x $
+\end_inset
+
+ to the nearest cluster (
+\begin_inset Formula $ \min_{i} (d(c_i,x))$
+\end_inset
+
+), where 
+\begin_inset Formula $d(x,y)$
+\end_inset
+
+ is any metric 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ (3) recompute 
+\begin_inset Formula $c_{1..k}$
+\end_inset
+
+ as the geometric centroid for each cluster 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDWHILE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+Step 2 & 3 is repeated at maximum 
+\begin_inset Formula $ n $
+\end_inset
+
+ times or the center positions converge. To compute the distance 
+\begin_inset Formula $ d(c_i,x) $
+\end_inset
+
+ one can use any metric. This work uses the Euclidean and Manhattan-Distance for k-means. It is faster then the Hierarchical Clustering as it does not need to update a full 
+\begin_inset Formula $n\times n$
+\end_inset
+
+ distance matrix, but only the distance to the cluster center 
+\begin_inset Formula $ c_i $
+\end_inset
+
+. However, k-means can converge into a local optimum. This can be avoided by re-sampling on the cost on time
+\end_layout
+
+\begin_layout Subsubsection
+
+Expectation Maximisation
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:em"
+
+\end_inset
+
+ The Expectation Maximisation Algorithm has been introduced by Demp 
+\shape italic
+et.al
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Demp77"
+
+\end_inset
+
+. It is a important tool for statistical analysis. Unlike hierarchical clustering and k-means clustering EM is a probabilistic clustering algorithm. It models the data as a mixture of distributions. In an iterative process parameters for those distributions are estimated, in case of a normal distribution those parameters are the expected value 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and variance 
+\begin_inset Formula $\sigma^2$
+\end_inset
+
+. Each cluster is represented by one distribution. The distributions are initiated with randomly selected parameters. In alternating Expectation and Maximisation steps, these parameters are optimized. The Exception step calculates the cluster probability for each instance, and the maximization step estimates the distribution parameters based on the cluster probabilities. Instances are assigned to the cluster with the highest membership probability. The clustering is done when the Log-Likelihood of the instances belonging to the clusters saturates.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\begin{split}
+\log \prod_{x_i\in D} likelihood(x_i) = \log \prod_{x_i\in D} \sum_{k\in Cluster} p_kP(x_i|C_k)\\
+= \sum_{k\in Cluster}\log\sum_{k\in Cluster}p_kP(x_i|C_k)
+\end{split}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+The EM algorithm has the advantage that it doesn't depend on a distance metric or similarity measure. It also can handle missing values, which would be ignored or lead to high distances in other methods. On the other hand its convergence often is suboptimal because it can stuck in linear optimization steps needing plenty EM-steps and increasing computation time.
+\end_layout
+
+\begin_layout Section
+
+Feature Selection
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "chapter:FeatureSelection"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+Feature Selection is an essential part to this work, therefore basics of this feature selection will be explained here.
+\end_layout
+
+\begin_layout Standard
+
+As datasets are constantly growing more and more, classification must deal with a high number of possible redundant or irrelevant features 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Zheng10"
+
+\end_inset
+
+. Those interfering features heavily impact the classifying performance, as they tend to produce over-fitted models. Also the growing dimensionality of data highly effects the running time of data-mining methods, feature selection methods try to deal with those features by reducing the feature space and therefore optimizing the learning process.
+\end_layout
+
+\begin_layout Standard
+
+Unsupervised Feature Selection methods do not use information about the class of the instance. More complex algorithms are supervised Feature Selection Methods where label information is used. Here three classes can be distinguished: Wrapper, Embedded and Filter approaches. Wrapper use a learning scheme to evaluate features, by learning a classifier on a feature set and evaluating the prediction performance. They have high risk of over-fitting the model to the dataset and classifier method. They are also very slow as they need to train a classifier for every evaluation-step. Embedded feature selection methods which come from a classifying algorithm itself, e.g. decision tree where the nodes are build from the most discriminative features. Filters compute some score for each feature in respect to the class.
+\end_layout
+
+\begin_layout Standard
+
+Additionally filter methods can be divided by their output: Ranking methods and subset evaluators. Ranking methods aim to rank features according to a score and removing those which to not exceed a certain threshold. The second family finds groups of features for the optimal subset but does not evaluate the score of individual features.
+\end_layout
+
+\begin_layout Standard
+
+Common to all methods is the goal to find feature which offer a good discrimination between classes.
+\end_layout
+
+\begin_layout Subsection
+
+Feature Selection Methods
+\end_layout
+
+\begin_layout Subsubsection
+
+Information Gain
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "infogain"
+
+\end_inset
+
+ Information Gain (IG)
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Cover91"
+
+\end_inset
+
+ is a intuitive and computational simple evaluation measure. It calculates how much additional information is gained by using a feature 
+\begin_inset Formula $ X $
+\end_inset
+
+ in respect to a label 
+\begin_inset Formula $ Y $
+\end_inset
+
+: 
+\begin_inset Formula \begin{equation}
+IG(X,Y)=H(X)-H(X|Y)
+\end{equation}
+\end_inset
+
+ 
+\begin_inset Formula $ H $
+\end_inset
+
+ is the entropy, which is a measure of uncertainty within a random variable. 
+\begin_inset Formula \begin{eqnarray}
+H(X)=-\sum \limits_{i}P(x_i) \log_2(P(x_i))\\
+H(X|Y) = -\sum \limits_{j}P(x_j)\sum \limits_{i}P(x_i|y_i) \log_2(P(x_i|y_i))
+\end{eqnarray}
+\end_inset
+
+ Information Gain the value by which the uncertainty of a label 
+\begin_inset Formula $ Y $
+\end_inset
+
+ is in/de-creased when given additional feature 
+\begin_inset Formula $ X $
+\end_inset
+
+. A higher value indicates a higher relevance of the feature 
+\begin_inset Formula $ X $
+\end_inset
+
+. Information Gain is a univariate evaluation measure i.e. does not take combinations of features into account.
+\end_layout
+
+\begin_layout Subsubsection
+
+Relief
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "relief"
+
+\end_inset
+
+ Relief is also a univariate filtering approach. It's score is defined as shown in equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:relief"
+
+\end_inset
+
+. A distance measure 
+\begin_inset Formula $ d(x) $
+\end_inset
+
+ is used to compute the distance of a instance 
+\begin_inset Formula $ t $
+\end_inset
+
+ in a set of randomly selected 
+\begin_inset Formula $ p $
+\end_inset
+
+ instances, and its nearest neighbours with same class 
+\begin_inset Formula $f_{NH}$
+\end_inset
+
+ (near hit) and different class 
+\begin_inset Formula $f_{NM}$
+\end_inset
+
+ (near miss) according to the feature value 
+\begin_inset Formula $ f_i $
+\end_inset
+
+. 
+\begin_inset Formula \begin{equation}
+\label{eq:relief}
+SC_R(f_i)=\frac{1}{2}\sum\limits_{t=1}^{p}d(f_{t,i}-f_{NM(x_t),i})-d(f_{t,i}-f_{NH(x_t),i})
+\end{equation}
+\end_inset
+
+ In this scenario the feature is weighted by its ability to distinguish between classes. The score will increase if the distance to the closest neighbour with the same class is small and the distance to the closest neighbour with a different class is large.
+\end_layout
+
+\begin_layout Subsubsection
+
+Correlation based Feature Selection
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "CFS"
+
+\end_inset
+
+ The Correlation based Feature Selection (CFS) method is based on the idea that good feature subsets contain features which are highly correlated with the label, and yield no correlation to each other. In order to find the best feature subset a merit score for each subset is computed: 
+\begin_inset Formula \begin{equation}
+Merit_S=\frac{k\overline{r_{cf}}}{\sqrt{k+k(k-1){\overline{r_{ff}}}}}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula $ k $
+\end_inset
+
+ is the number of features, the mean correlation of the feature set is 
+\begin_inset Formula \begin{equation}
+\overline{r_{cf}} = \sum \limits_{f_i\in S} \frac{1}{k}\sum cor(f_i,c) 
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+and 
+\begin_inset Formula $\overline{r_{ff}}$
+\end_inset
+
+ is the average correlation of features. 
+\begin_inset Formula \begin{equation}
+\overline{r_{ff}} = \sum \limits_{f_i\in S} \frac{1}{k}\sum\limits_{f_j\in S} cor(f_i,f_j)
+\end{equation}
+\end_inset
+
+ Note that the correlation 
+\begin_inset Formula $ cor(f_i,c) $
+\end_inset
+
+ and respective 
+\begin_inset Formula $ cor(f_i,f_j) $
+\end_inset
+
+ use a normalized Information Gain measure called Symmetrical Uncertainty.
+\end_layout
+
+\begin_layout Subsubsection
+
+Symmetrically Uncertainty
+\end_layout
+
+\begin_layout Standard
+
+Symmetrically Uncertainty is based on the uncertainty coefficient 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Press88"
+
+\end_inset
+
+ which is closely related to information gain. 
+\begin_inset Formula $C_{XY}$
+\end_inset
+
+ and 
+\begin_inset Formula $C_{YX}$
+\end_inset
+
+ must not be necessarily equal, therefore symmetrically uncertainty 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Witten2005"
+
+\end_inset
+
+ (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "symu"
+
+\end_inset
+
+) computes the weighted average of the two uncertainty coefficients
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+C_{XY}=\frac{IG(X;Y)}{H(Y)} ~~~~\mbox{and}~~~~ C_{YX}=\frac{IG(X;Y)}{H(X)}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\label{symu}
+U(X,Y) = 2 \frac{I(X;Y)}{H(X)+H(Y)}
+\end{equation}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+
+Significance Attribute Evaluation
+\end_layout
+
+\begin_layout Standard
+
+Significance Attribute Evaluation 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Ahmad2004"
+
+\end_inset
+
+ is based on the idea there is a strong possibility for instances with complementary values will belong to complementary classes. The significance is computed as a two-way function of the association of a attribute to the class decision.
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,13 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: main.aux
+The style file: styles/bauermaNum.bst
+Database file #1: bibliography/literature.bib
+You're missing a field name---line 2 of file bibliography/literature.bib
+ : 
+ : %author = {},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Name 3 in "Zhao, Z. and Morstatter, F. and Sharma, S, and Alelyani, S. and Anand, A. and Liu, H." has a comma at the end for entry Zheng10
+while executing---line 1005 of file styles/bauermaNum.bst
+Name 3 in "Zhao, Z. and Morstatter, F. and Sharma, S, and Alelyani, S. and Anand, A. and Liu, H." has a comma at the end for entry Zheng10
+while executing---line 1049 of file styles/bauermaNum.bst
+(There were 3 error messages)

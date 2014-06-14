@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<labels xmlns="http://mulan.sourceforge.net/labels">
+<label name="SciFi"></label>
+<label name="Crime"></label>
+<label name="Romance"></label>
+<label name="Animation"></label>
+<label name="Music"></label>
+<label name="Comedy"></label>
+<label name="War"></label>
+<label name="Horror"></label>
+<label name="FilmNoir"></label>
+<label name="Adult"></label>
+<label name="News"></label>
+<label name="Western"></label>
+<label name="Thriller"></label>
+<label name="Adventure"></label>
+<label name="Mystery"></label>
+<label name="Short"></label>
+<label name="TalkShow"></label>
+<label name="Drama"></label>
+<label name="Action"></label>
+<label name="Documentary"></label>
+<label name="Musical"></label>
+<label name="History"></label>
+<label name="Family"></label>
+<label name="RealityTV"></label>
+<label name="Fantasy"></label>
+<label name="GameShow"></label>
+<label name="Sport"></label>
+<label name="Biography"></label>
+</labels>

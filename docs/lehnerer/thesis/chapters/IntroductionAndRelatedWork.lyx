@@ -1,0 +1,1429 @@
+#LyX file created by tex2lyx 2.0.0
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass scrbook
+\options bibtotoc,idxtotoc,headsepline,footsepline,footexclude,BCOR12mm,DIV11
+\use_default_options false
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 12
+\spacing single
+\use_hyperref 0
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+
+Introduction and Related Work
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "chapter:IntroductionAndRelatedWork"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+
+Description of the field
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:description"
+
+\end_inset
+
+ Computational biology has become an essential part of modern biology, biochemistry and medicine. Closely relative fields like chemoinformatics, immunoinformatics and system biology spread the tools of computational science to many fields of life science. Bioinformatics or computational biology aims to collect, categorize, store and analyse biological systems 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Luscombe01"
+
+\end_inset
+
+: Already before the Human Genome Project 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "human01"
+
+\end_inset
+
+ biologists became aware of the powerful possibilities of computational science. Successive a huge amount of data, e.g. gene sequences, structural informations, interactions and other, data was collected. As first step bioinformatics enabled the storage of those data in databases like SWISSPROT 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Bairoch:1996"
+
+\end_inset
+
+ and the Protein Data Bank (PDB)
+\begin_inset Foot
+status collapsed
+
+
+\begin_layout Standard
+
+
+\begin_inset Flex Flex:URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.rcsb.org/pdb/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+. After storing and cataloging data, analyzing steps to discover patterns and structures within the data 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Luscombe01"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+Knowledge discovery in databases (KDD) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Fayyad96fromdata"
+
+\end_inset
+
+ processes large datasets and aims to discover patterns within the data using statistical methods as well methods from artificial intelligence. It offers deep insight in the data and a better understanding of the underlying structure patterns. The process of mining patterns describing the data is called descriptive Data-Mining. On the other hand predictive Data-Mining allows to extract models and offers methods to classify unseen examples. Unsupervised learning is the task to find structure patterns like clusters in unlabeled data. Supervised learning refers to the task of learning models to classify labeled data. It maps a instance of features to a output variable called label. Supervised learning can be split into classification and regression analysis. While classification predicts discrete values, regression analysis offers methods to predict continuous target variables. Beside Clustering and Association Rule Learning, Classification is one of the core areas in Data Mining. 
+\begin_inset Newpage newpage
+\end_inset
+
+Classification is the process of assigning categories to examples of data 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "mitchell97"
+
+\end_inset
+
+. A common example is the 
+\shape italic
+PlayTennis
+\shape default
+-Problem whether to play tennis or not. Given a dataset which maps features like weather or weekday to the decision play tennis or not. The goal is to learn a model predicting this target value using the given features. An example is showed in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:tennis"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+\align center
+
+
+\begin_inset Tabular 
+<lyxtabular version="3" rows="4" columns="3">
+<features>
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+weather 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+weekday 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+class 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+sunny 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Sunday 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+yes 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+sunny 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Monday 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+no 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+rain 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+Sunday 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+no 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+Example for classification: Columns describe features, the last column represents the class. The class corresponds to the decision if the users plays tennis or not. Examples are showed in rows.
+\begin_inset Newline newline
+\end_inset
+
+ If the tennis court is only available on weekends and the user only plays tennis on sunny days only the first instance will be classified to 
+\begin_inset Formula $yes$
+\end_inset
+
+, both other instance will be classified to 
+\begin_inset Formula $no$
+\end_inset
+
+. 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:tennis"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+Among others, there are two basic extensions of the task of classification: 1) from a binary to a multi-class classification problem, where more then two categories are available and 2) to a multi-label problem. The latter one is given if an instance is associated with a set of categories (labels) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas07"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+
+Definition
+\end_layout
+
+\begin_layout Standard
+
+Formally a dataset 
+\begin_inset Formula $D$
+\end_inset
+
+ can be described as follows: 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ D= \{(x_i,Y_i) | i=1...|D|\} $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+, where each instance 
+\begin_inset Formula $(x_i,Y_i)$
+\end_inset
+
+ consists of a feature vector 
+\begin_inset Formula $x_i$
+\end_inset
+
+ and a subset of labels/classes 
+\begin_inset Formula $Y_i\subseteq L$
+\end_inset
+
+, where 
+\begin_inset Formula $L$
+\end_inset
+
+ is the full set of labels. Single-label classification is concerned if a class 
+\begin_inset Formula $ \lambda \in L $
+\end_inset
+
+ is assigned to instances. Binary classification refers to label sets 
+\begin_inset Formula $L$
+\end_inset
+
+ of cardinality 2 (
+\begin_inset Formula $|L|=2$
+\end_inset
+
+), multi-class classification to sets 
+\begin_inset Formula $ |L|>2 $
+\end_inset
+
+. In both cases classifiers choose out of 
+\begin_inset Formula $|L|$
+\end_inset
+
+ classes but always only one class 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is assigned to an instance. In multi-label classification a subset 
+\begin_inset Formula $ Y\subseteq L $
+\end_inset
+
+ is assigned to each instance, therefore a classifier has to choose a set of assigned labels as well as the number of assigned labels.
+\end_layout
+
+\begin_layout Paragraph
+
+Applications
+\end_layout
+
+\begin_layout Standard
+
+For instance, pictures mostly matches not only one category, but shows a composition of different categories like hills, forest, water or beach. An other example would be movies like 
+\shape italic
+Da Vinci Code
+\shape default
+ which can be categorized as Society
+\backslash
+Religion and Arts
+\backslash
+Movies 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas07"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+In bioinformatics an application for multi-label classification would be the ToxCast
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+tm
+\end_layout
+
+\end_inset
+
+ project 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Dix07"
+
+\end_inset
+
+. The project started in 2007 where 320 different chemical structures where tested for toxicological endpoints. About 1600 properties and more then 400 endpoints where examined.
+\end_layout
+
+\begin_layout Standard
+
+The goal of this project is to map 
+\shape italic
+in vitro
+\shape default
+ measured features to 
+\shape italic
+in vivo
+\shape default
+ observed toxicological endpoints, which is a classical task of classification. Particularly it is a challenging task for multi-label learning as the set of toxicological endpoints (400) which refer to labels and the set of features (1600) is quite large. Once this is done, predictions about the toxicity of chemical substances/structures can be made without tedious lab-work or morally questionable animal experiments.
+\end_layout
+
+\begin_layout Section
+
+Motivation
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+begin{theorem}
+\end_layout
+
+\end_inset
+
+ For a dataset 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ D= \{(x_i,Y_i) | i=1...|D|\} $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ with a feature vector 
+\begin_inset Formula $ x_i $
+\end_inset
+
+ label set 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ Y_i \subseteq L$
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+, there exists a subset 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ L_G \subseteq L $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ of all labels and a corresponding subset 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ X_G \subseteq X $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ of features forming a subset of the data 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ G \subseteq D $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ with 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+mbox{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ G = \{({x_G}_i,{Y_G}_i) | i=1...|G|\} $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ which attributes have a high internal association 
+\begin_inset CommandInset label
+LatexCommand label
+name "theorem"
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+end{theorem}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+In many multi-label applications there are groups of connected labels and features which come naturally. E.g. in the picture labeling example, it is probable to see combinations of water and beach or islands. On the other hand it is very improbable to see combinations like forests and desert. Another example would be the ToxCast
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+tm
+\end_layout
+
+\end_inset
+
+ dataset, where it is highly probable to find families of in vitro properties connected to a group of similar in vivo endpoints like neural diseases, like neural disorders. Therefore there will be specific features for specific labels, for instance the blue content of a picture may be important for the label sea and sky, but irrelevant to other label like forests.
+\end_layout
+
+\begin_layout Standard
+
+Based on this assumption this work aims to develop a method to find sets of labels and corresponding features. Subsequently multi-label learners can be applied on those sub-datasets. Experiments show those models achieve better performance in some cases since they can fit to characteristic groups. In addition subsets representing independent information patterns can be isolated.
+\end_layout
+
+\begin_layout Standard
+
+The bachelor thesis is organized as follows: First underlying methods like clustering and feature selection are be described. Afterwards two Feature- and Label-Selection for Multi-Label Classification methods are be presented in this work. Finally it concludes with a presentation of the evaluation and discussion of possible benefits of these methods.
+\end_layout
+
+\begin_layout Section
+
+Related Work
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:relatedwork"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This chapter gives an overview on existing multi-label classification techniques. Especially HOMER is described here, as it uses a similar approach to this work, although with a different intention as its focus lies on efficiency rather then structural decomposition. The following notation is used for describing the multi-label problems: 
+\begin_inset Formula $ D $
+\end_inset
+
+ is the dataset composed of n examples
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $ (x_1,Y_1), (x_2,Y_2), \hdots, (x_n,Y_n) $
+\end_inset
+
+ where 
+\begin_inset Formula $ x_i $
+\end_inset
+
+ is the instance containing the feature values and 
+\begin_inset Formula $ Y_i \subseteq L $
+\end_inset
+
+ a subset of labels associated with this instance.
+\end_layout
+
+\begin_layout Subsection
+
+Multi-Label Classification Methods
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:mlmethods"
+
+\end_inset
+
+ There are two groups of multi-label classification methods 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas07"
+
+\end_inset
+
+: 
+\end_layout
+
+\begin_layout Enumerate
+
+Transformation-based methods which transform the problem in to several single-label problems and apply single label classification methods (e.g. SVMs 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "SVM"
+
+\end_inset
+
+, Decision Trees 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Quinlan1986"
+
+\end_inset
+
+, k-Nearest-Neighbors 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "mitchell97"
+
+\end_inset
+
+). A exception is the LabelPowerset 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "para:powerset"
+
+\end_inset
+
+ method which transforms the problem to a multi-class classification task 
+\end_layout
+
+\begin_layout Enumerate
+
+Algorithm-adoption methods which extend existing algorithms to be capable of handling multi-label problems directly 
+\end_layout
+
+\begin_layout Subsubsection
+
+Transformation based Methods
+\end_layout
+
+\begin_layout Paragraph
+
+Binary Relevance
+\end_layout
+
+\begin_layout Standard
+
+A basic multi-label classification method is Binary Relevance (BR) 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas07"
+
+\end_inset
+
+. This methods transforms the multi-label problem into 
+\begin_inset Formula $ |L| $
+\end_inset
+
+ separate problems and trains a single-label learner on each on them. The prediction is simply composed by the prediction of the single classifications 
+\begin_inset Formula $ l_1\hdots l_n $
+\end_inset
+
+. It ignores any dependences in-between the labels. This makes it to the most simple multi-label learner. Labels tend to have strong inter-relationships, however, BR misses to consider those relationships so predictions on a label 
+\begin_inset Formula $ l_i $
+\end_inset
+
+ have no influence on predictions of other labels 
+\begin_inset Formula $ l_j $
+\end_inset
+
+. However is it still popular as it scales linear with the number of labels. 
+\end_layout
+
+\begin_layout Paragraph
+
+Label Powerset
+\end_layout
+
+\begin_layout Standard
+
+The Label Powerset method tries to include label dependencies by taking costs in computational complexity. For every unique set 
+\begin_inset Formula $ S $
+\end_inset
+
+ of labels in the data a class 
+\begin_inset Formula $ l_S $
+\end_inset
+
+ is created representing this combination, and a multi-class classifier is build upon it. So every combination is represented as a single class and label correlations are taken into account directly. Despite the worst-time complexity an other disadvantage is that, in it's basic form it can only predict label combinations which are present in the training data. 
+\end_layout
+
+\begin_layout Paragraph
+
+Multi-Label Stacking
+\end_layout
+
+\begin_layout Standard
+
+Multilabel-Stacking or 
+\begin_inset Formula $ BR^2 $
+\end_inset
+
+ tries to deal with the disadvantage of BR by disregarding label relations 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas09"
+
+\end_inset
+
+. Therefore a stacking mechanism is used. The first level consists of a BR classifier which predicts the labels independently. A second level takes the output of the first level BR classifier, in detail the label-confidences, as input. The result is a relation depended prediction. Formally, a first step produces a dataset 
+\begin_inset Formula $ D'={(y_i,Y_i),i=1..N)} $
+\end_inset
+
+. 
+\begin_inset Formula $ y_i $
+\end_inset
+
+ containing all predicted confidences of the base-level for all labels 
+\begin_inset Formula $\lambda_{1..N}$
+\end_inset
+
+ of a instance 
+\begin_inset Formula $ i $
+\end_inset
+
+. Afterwards for every label a corresponding meta-level binary classifier will be used to classify 
+\begin_inset Formula $ y_i $
+\end_inset
+
+ resulting in a prediction of 
+\begin_inset Formula $\lambda_{1..N}$
+\end_inset
+
+. To reduce the noise the 
+\begin_inset Formula $\phi$
+\end_inset
+
+ correlation between all labels on the original data is computed. For the meta-level only those labels which exceed the threshold in respect to the current label will be used. By this the dimensionality of the feature space in the meta-level and also the noise will be reduced.
+\end_layout
+
+\begin_layout Paragraph
+
+Classifier Chains
+\end_layout
+
+\begin_layout Standard
+
+Classifier Chains by Read 
+\shape italic
+et al.
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Read09"
+
+\end_inset
+
+ try to handle the label correlations by using a chain of single-label classifiers predicting the labels subsequently. I.e. for every label 
+\begin_inset Formula $ l $
+\end_inset
+
+ in the label set 
+\begin_inset Formula $ L $
+\end_inset
+
+ a single-label classifier 
+\begin_inset Formula $S_{1..N}$
+\end_inset
+
+ is trained, where every classifier 
+\begin_inset Formula $S_i$
+\end_inset
+
+ in the chain has the predicted label confidences of all previous classifiers. For every member in the chain a feature representing the confidence of the prediction for the current label is added to the feature space. Ordering of the chain influences the performance, nevertheless current implementations are using a random order. The performance can be improved by using ensembles of random ordered Classifier Chains.
+\end_layout
+
+\begin_layout Subsubsection
+
+Algorithm-adoption methods
+\end_layout
+
+\begin_layout Paragraph
+
+Ml-kNN
+\end_layout
+
+\begin_layout Standard
+
+Ml-kNN proposed by Min-Ling Zhang and Zhi-Hua Zhou 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Zhang05"
+
+\end_inset
+
+ is an adaption of the k-NearestNeighbour algorithm. As a first step the k nearest neighbours are calculated, secondly the label sets are mapped using the maximum a posteriori principle (MAP) based on the information gain about the label sets of the neighbouring instances. Given a dataset 
+\begin_inset Formula $ D=(x_i,Y_i) $
+\end_inset
+
+ and labels 
+\begin_inset Formula $ L=l_{1..N}$
+\end_inset
+
+ algorithm shows the procedure of Ml-kNN. A 
+\shape italic
+membership counting
+\shape default
+ vector 
+\begin_inset Formula $ \vec{C}_t(l) $
+\end_inset
+
+ is used representing the number of neighbours of instance 
+\begin_inset Formula $ t $
+\end_inset
+
+ are associated with label 
+\begin_inset Formula $l$
+\end_inset
+
+. 
+\begin_inset Formula $ N(t) $
+\end_inset
+
+ is the set of the 
+\begin_inset Formula $k$
+\end_inset
+
+ nearest neighbours of instance 
+\begin_inset Formula $t$
+\end_inset
+
+. 
+\begin_inset Formula $H^l_1$
+\end_inset
+
+ is the event that 
+\begin_inset Formula $t$
+\end_inset
+
+ is associated with label 
+\begin_inset Formula $l$
+\end_inset
+
+ in contrast 
+\begin_inset Formula $H^l_0$
+\end_inset
+
+ is the event that 
+\begin_inset Formula $t$
+\end_inset
+
+ is not associated with label 
+\begin_inset Formula $l$
+\end_inset
+
+. With 
+\begin_inset Formula $E^l_j:j=0..k$
+\end_inset
+
+ the event that among the 
+\begin_inset Formula $k$
+\end_inset
+
+ nearest neighbours are exactly 
+\begin_inset Formula $j$
+\end_inset
+
+ instances labelled with label 
+\begin_inset Formula $l$
+\end_inset
+
+. With those variables for each instance 
+\begin_inset Formula $t$
+\end_inset
+
+ a 
+\shape italic
+category vector
+\shape default
+ 
+\begin_inset Formula $\vec{y}_t(l)$
+\end_inset
+
+ can be computed where 
+\begin_inset Formula $ \vec{y}_t(l) $
+\end_inset
+
+ is 1 if 
+\begin_inset Formula $ l $
+\end_inset
+
+ is among the predicted label set 
+\begin_inset Formula $Y_{t_{pred}} $
+\end_inset
+
+ for instance 
+\begin_inset Formula $t$
+\end_inset
+
+. 
+\begin_inset Formula $\vec{r}_t(l)$
+\end_inset
+
+ is holding numeric values to generate a ranking.
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+
+\begin_layout Standard
+
+
+\begin_inset Caption
+
+
+\begin_layout Standard
+
+Ml-kNN
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Ml-kNN"
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+begin{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ Identify 
+\begin_inset Formula $N(t)$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+FOR
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $ l \in Y $
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+}
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $\vec{C}_t(l)=\sum_{a\in N(t)}\vec{y}_{x_a}(l)$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $\vec{y}_t(l)=\arg\max_{b\in \{0,1\}} P(H^l_b)P(E^l_{\vec{C}_t(l)}|H^l_b)$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+STATE
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Formula $\vec{r}_t(l)=P(E^l_{\vec{C}_t(l)}|H^l_b)$
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+ENDFOR
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Standard
+
+
+\backslash
+end{algorithmic}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+
+HOMER
+\end_layout
+
+\begin_layout Standard
+
+This multi-label learner was introduced by Tsoumakas 
+\shape italic
+et al.
+\shape default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+after ""
+key "Tsoumakas07_2"
+
+\end_inset
+
+. It is based upon a Hierarchy Of Multilabel classifERs. The Hierarchy is build by splitting the label set 
+\begin_inset Formula $ L $
+\end_inset
+
+ into 
+\begin_inset Formula $k$
+\end_inset
+
+ disjunct subsets. This is done recursively for each subset until the number of remaining labels is 
+\begin_inset Formula $<k$
+\end_inset
+
+. For every step in the hierarchy clustering is used to find 
+\begin_inset Formula $k$
+\end_inset
+
+ clusters of similar labels. To ensure a balanced label distribution for each subset a modified cluster algorithm based on k-means, called 
+\shape italic
+balanced k-means
+\shape default
+ is used. The clustering uses a subset 
+\begin_inset Formula $ W $
+\end_inset
+
+ of the dataset 
+\begin_inset Formula $ D $
+\end_inset
+
+ which is the intersection of the subset 
+\begin_inset Formula $ Y $
+\end_inset
+
+ containing only the label-attributes and the labels annotated at the current node 
+\begin_inset Formula $ L_n \subset L $
+\end_inset
+
+. Result is a tree-like hierarchy of 
+\begin_inset Formula $L$
+\end_inset
+
+ with 
+\begin_inset Formula $L_{root}=L$
+\end_inset
+
+ and every single label as leaf. A meta-label level determines the path through the hierarchy. A instance 
+\begin_inset Formula $ x $
+\end_inset
+
+ is annotated with meta-label 
+\begin_inset Formula $\mu_n$
+\end_inset
+
+ if it is associated with any label of 
+\begin_inset Formula $L_n$
+\end_inset
+
+. For every internal node a classifier is trained predicting current the meta-label 
+\begin_inset Formula $\mu_n$
+\end_inset
+
+. Therefore only branches with positive meta-labels will considered for multi-label predicting, reducing the computational costs because for every branch a classifier has to deal with a much smaller label set. As classifiers have to deal with a much smaller set of labels in each level and only those branches with positive meta-labels a linear training and logarithmic predicting complexities with respect to 
+\begin_inset Formula $|L|$
+\end_inset
+
+ could be achieved.
+\end_layout
+
+\end_body
+\end_document

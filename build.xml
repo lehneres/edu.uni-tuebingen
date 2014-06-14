@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<project name="Mulan-TUM" default="install" basedir=".">
+
+    <property name="source.dir" value="src" />
+    <property name="config.dir" value="config" />
+    <property name="build.dir" value="build" />
+    <property name="lib.dir" value="lib" />
+    <property name="images.dir" value="images" />
+    <property name="resources.dir" value="resources" />
+    <property name="dist.dir" value="dist" />
+    <property name="docs.dir" value="docs" />
+
+
+    <property name="api.dir" value="${docs.dir}/api" />
+    <property name="weka.jar" value="${lib.dir}/weka.jar" />
+    <property name="mulan.jar" value="${lib.dir}/mulan.jar" />
+    <property name="gridSearch.jar" value="${lib.dir}/gridSearch.jar" />
+    <property name="partialLeastSquares.jar" value="${lib.dir}/partialLeastSquares.jar" />
+
+    <property name="chiSquaredAttributeEval.jar"
+              value="${lib.dir}/chiSquaredAttributeEval.jar"
+    />
+    <property name="probabilisticSignificanceAE.jar"
+              value="${lib.dir}/probabilisticSignificanceAE.jar"
+    />
+    <property name="weka-tum.jar" value="${lib.dir}/weka-tum.jar" />
+    <property name="tools.dir" value="tools" />
+    <property name="manifest" value="./manifest" />
+    <property name="actual.jar" value="mulan-tum.jar" />
+
+    <path id="classpath.base">
+        <pathelement location="${weka.jar}" />
+        <pathelement location="${gridSearch.jar}" />
+        <pathelement location="${mulan.jar}" />
+        <pathelement location="${chiSquaredAttributeEval.jar}" />
+        <pathelement location="${partialLeastSquares.jar}" />
+        <pathelement location="${probabilisticSignificanceAE.jar}" />
+        <pathelement location="${weka-tum.jar}" />
+    </path>
+
+    <target name="checkfiles"
+            description="checks if needed files are available"
+    >
+        <echo>checking if needed jar-libraries are in lib...</echo>
+
+    </target>
+
+
+    <target name="init" description="initializes build process">
+        <echo>initializing...</echo>
+        <tstamp />
+        <echo>building directory structure...</echo>
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${lib.dir}" />
+        <mkdir dir="${docs.dir}" />
+        <mkdir dir="${dist.dir}" />
+    </target>
+
+
+    <target name="compile"
+            description="compiles the source directory with the standart JVM"
+            depends="init"
+    >
+        <echo>compiling...</echo>
+        <javac srcdir="${source.dir}"
+               destdir="${build.dir}"
+               excludes="${source.dir}/test/**"
+               debug="on"
+               includeantruntime="false"
+               encoding="utf-8"
+        >
+            <exclude name="test/**" />
+            <classpath>
+                <pathelement location="${weka.jar}" />
+                <pathelement location="${gridSearch.jar}" />
+                <pathelement location="${mulan.jar}" />
+                <pathelement location="${chiSquaredAttributeEval.jar}" />
+		<pathelement location="${partialLeastSquares.jar}" />
+                <pathelement location="${probabilisticSignificanceAE.jar}" />
+                <pathelement location="${weka-tum.jar}" />
+            </classpath>
+        </javac>
+        <condition property="build.ok">
+            <equals arg1="a" arg2="a" />
+        </condition>
+    </target>
+
+    <target name="successinstall" depends="dist">
+        <echo>Mulan-TUM has been successfully packed and is ready to distribute...</echo>
+    </target>
+
+    <target name="install" depends="successinstall">
+    </target>
+
+    <target name="dist"
+            depends="compile"
+            description="generate the distribution"
+            if="build.ok"
+            unless="init.log.available"
+    >
+        <echo>generating Jar file....</echo>
+        <property name="newjarname"
+                  value="${dist.dir}/mulan-tum-${DSTAMP}.jar"
+        />
+        <jar destfile="${newjarname}" compress="true" manifest="${manifest}">
+            <fileset dir="${build.dir}" excludes="test/**" />
+            <fileset dir="${resources.dir}" />
+        </jar>
+        <copy file="${newjarname}" tofile="${actual.jar}" />
+
+    </target>
+
+    <target name="clean" description="Removes previous build">
+        <echo>cleaning build dir...</echo>
+        <!-- Remove old class files -->
+        <delete verbose="true">
+            <fileset file="${init.log}" />
+            <fileset dir="${build.dir}" />
+        </delete>
+    </target>
+
+</project>

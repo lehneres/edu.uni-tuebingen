@@ -1,0 +1,8 @@
+file="$1"
+
+iter=0
+exec <$file
+while read line; do
+echo -n "$line" > newFile$iter
+iter=$((iter+1))
+done
