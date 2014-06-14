@@ -1,0 +1,73 @@
+\section{Discussion}
+As seen already in the heat map (figure \ref{fig:heatmap}), the tissue
+expression values were quite heterogeneous especially the ones of samples
+GSM433783 and GSM433779. The Fischer's exact test provides additional evidence
+that GSM433779 has a unique pattern of gene expression, but a closer examination
+of the affected KEGG pathways shows that these differences are all related to
+non-carcinogenic pathways. As a consequence of these findings tissue GSM433779
+has been excluded from further pathway analysis.
+
+In contrast, a closer examination of differentially regulated pathways in sample
+GSM433783 yields several pathways containing oncogenes. ``Pathways in cancer''
+and ``Small cell lung cancer'' are obvious reasons candidates, as is the ``Focal
+adhesion'' pathway due to the effect of intercellular contacts and adhesion to
+the extracellular matrix (ECM)) on the ability of cancerogenic cells to enter
+metastasis. The loss of self induced cell death upon losing connection to
+neighboring cells and the resulting motility of cancerogenic cells are important
+steps in oncogenesis. Contrary to this the last of the examined pathways --
+``Lysosome'' -- to our knowledge has no major impact on cancer proliferation.
+
+The three cancer related pathways ``Pathways in cancer'', ``Small cell lung
+cancer'' and ``Focal adhesion'' were confirmed to be significantly deregulated
+by the GSEA method. But GSEA also provides additional information by exhibiting
+that these pathways are under-expressed in GSM433783 compared to all other
+tissues. To identify genes with the strongest contribution, pathway
+visualizations were created using BiNA which were manually inspected for
+interesting candidates (see figures \ref{fig:pathwaysincancer}, \ref{fig:SCLC}
+and \ref{fig:focAd}). The target genes \textit{myc}, \textit{cdk2} and
+\textit{catenin} can be identified as significantly under-expressed compared to
+the average of all remaining tissues.
+
+The protein \textit{Cdk2} is of major importance to promote the cell cycle and
+can be an oncogen if over expressed\cite{Du2004}. High expression levels would
+result in enhanced proliferation. \textit{Myc} is also a known
+oncogene\cite{Dang2005} with a central role in oncogenesis. It regulates the
+expression of several cell cycle promoting proteins, one example being shown in
+the BiNA pathway of ``Pathways in cancer'' (figure \ref{fig:pathwaysincancer}),
+where \textit{myc} promotes \textit{cdk2}. Over-expression of \textit{myc} is a
+characteristic feature of tumor cells leading to over-proliferation. Within the
+``Focal adhesion'' (figure \ref{fig:focAd}) pathway \textit{catenin} was found
+as being down-regulated. Over-expression of \textit{catenin} is strongly
+associated with cancer\cite{MacDonald2009} due to the genes' nuclear
+localization and possible interaction with multiple transcription factors
+inducing proliferation.
+
+We conclude that due to the significantly lower expression values for several
+oncogenes and related pathways cancer cells of tissue GSM433783 may have a lower
+proliferation rate than the other eight cell lines. Although the aforementioned
+genes play major roles in cancer, their lower expression may not necessarily
+have a very strong effect on the proliferation of these specific cancer cells.
+Enhanced proliferation is only one of many aspects of cancer and normally many
+alternative pathways exist in the cellular regulatory network to compensate
+down- and up-regulation in individual genes or pathways. Other important
+properties of cancer cells such as independence of correct cell contacts,
+motility and immunity to apoptosis may not be affected at all.
+
+
+\subsection{Biological significance}
+The given dataset contained nine melanoma tissues but no healthy control tissue.
+Thus, all analysis steps implemented in the course could only be applied to
+compare expression levels and regulation of pathways between the nine different
+cancer tissues, but not with a healthy control tissue. Such a comparison is
+likely to reveal that the overall difference between the nine cell lines is of
+minor magnitude. The outcome of our analysis therefore has limited biological
+relevance and the differences in pathway regulation are expected to be mostly
+insignificant. % not a nice word to end it, but i guess it fit's quite well ;-)
+
+% \subsection{possible improvements}
+% 
+% asTable() output should have tissue-specific expression values in first
+% columns rather than last to allow addition of further gene IDs to the DataSet
+% without redefining data columns for R heatmap script; alternatively wrap call of
+% Rscript in a method that detects the table layout and sets parameters
+% accordingly.

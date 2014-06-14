@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1800"
+   height="1024"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="Neues Dokument 1">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective2951"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3022"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3093"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.24748737"
+     inkscape:cx="540.13028"
+     inkscape:cy="1144.5365"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="856"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Frames">
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3099"
+       width="887.24292"
+       height="1017.243"
+       x="7.0927863"
+       y="3.9499459"
+       ry="6.9507389" />
+    <rect
+       ry="6.9507389"
+       y="3.9499459"
+       x="907.09277"
+       height="1017.243"
+       width="887.24292"
+       id="rect3875"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+  </g>
+  <g
+     inkscape:label="pngs"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-28.362183)">
+    <image
+       y="37.555931"
+       x="912.10144"
+       id="image3095"
+       height="1005.7507"
+       width="876.10309"
+       xlink:href="file:///home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc_right.png"
+       inkscape:export-filename="/home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc.png"
+       inkscape:export-xdpi="51.66"
+       inkscape:export-ydpi="51.66" />
+    <image
+       y="36.505039"
+       x="7.5714369"
+       id="image2953"
+       height="1007.7142"
+       width="877.55945"
+       xlink:href="file:///home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc_left.png"
+       inkscape:export-filename="/home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc.png"
+       inkscape:export-xdpi="51.66"
+       inkscape:export-ydpi="51.66" />
+    <image
+       y="39.219273"
+       x="1627.5714"
+       id="image3024"
+       height="192"
+       width="162"
+       xlink:href="file:///home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc_legend.png"
+       inkscape:export-filename="/home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc.png"
+       inkscape:export-xdpi="51.66"
+       inkscape:export-ydpi="51.66" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3877"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Myriad Pro;-inkscape-font-specification:Myriad Pro"
+       transform="translate(258.59905,101.09317)"
+       inkscape:export-filename="/home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc.png"
+       inkscape:export-xdpi="51.66"
+       inkscape:export-ydpi="51.66"><flowRegion
+         id="flowRegion3879"><rect
+           id="rect3881"
+           width="84.852814"
+           height="84.852814"
+           x="-238.396"
+           y="894.7005" /></flowRegion><flowPara
+         id="flowPara3883"
+         style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Adobe Garamond Pro;-inkscape-font-specification:Adobe Garamond Pro">A</flowPara></flowRoot>    <flowRoot
+       transform="translate(1157.6957,101.09317)"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Myriad Pro;-inkscape-font-specification:Myriad Pro"
+       id="flowRoot3885"
+       xml:space="preserve"
+       inkscape:export-filename="/home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc.png"
+       inkscape:export-xdpi="51.66"
+       inkscape:export-ydpi="51.66"><flowRegion
+         id="flowRegion3887"><rect
+           y="894.7005"
+           x="-238.396"
+           height="84.852814"
+           width="84.852814"
+           id="rect3889" /></flowRegion><flowPara
+         style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Adobe Garamond Pro;-inkscape-font-specification:Adobe Garamond Pro"
+         id="flowPara3891">B</flowPara></flowRoot>    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.92602724;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3911"
+       width="167.75592"
+       height="191.68454"
+       x="1623.2292"
+       y="35.662773"
+       ry="6.2752867"
+       inkscape:export-filename="/home/aldehoff/Uni/IntegrativeBioinformatics/svn/trunk/doc/img/sclc.png"
+       inkscape:export-xdpi="51.66"
+       inkscape:export-ydpi="51.66" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="labels"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Myriad Pro;-inkscape-font-specification:Myriad Pro"
+       x="365.71426"
+       y="82.571426"
+       id="text3893"><tspan
+         sodipodi:role="line"
+         id="tspan3895"
+         x="365.71426"
+         y="82.571426"
+         style="font-style:italic;-inkscape-font-specification:Bitstream Vera Sans Oblique">myc</tspan></text>
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       id="rect3899"
+       width="128.57143"
+       height="57.142857"
+       x="510.85712"
+       y="698.28571" />
+    <text
+       id="text3901"
+       y="754.28571"
+       x="517.14288"
+       style="font-size:64px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Myriad Pro;-inkscape-font-specification:Myriad Pro"
+       xml:space="preserve"><tspan
+         style="font-style:italic;-inkscape-font-specification:Bitstream Vera Sans Oblique"
+         y="754.28571"
+         x="517.14288"
+         id="tspan3903"
+         sodipodi:role="line">cdk2</tspan></text>
+  </g>
+</svg>

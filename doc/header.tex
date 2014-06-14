@@ -1,0 +1,129 @@
+\documentclass[
+  a4paper,
+  10pt,
+  oneside,			% or twoside
+  final,			% or draft
+%   draft,			% or final
+%   titlepage,
+  onecolumn,
+  openbib,
+  headsepline			% Trennlinie im Seitenkopf
+  %footsepline,			% Trennlinie im Seitenfuß
+%   liststotoc,			% Verzeichnisse im Inhaltsverzeichnis		[obsolete]
+%   bibtotoc			% Literaturangaben im Inhaltsverzeichnis	[obsolete]
+]{scrartcl}
+
+% Page Layout
+\usepackage[usenames,svgnames]{xcolor}
+
+\usepackage[top=3cm,bottom=3cm]{geometry}	% make better use of the page than plain KOMA-script
+% left=2cm,right=1.5cm
+\usepackage{pdflscape}          % landscape-Format mit PDF
+\usepackage{fancyhdr}		% für schicke(?) Seitentitel
+\usepackage[pdftex]{graphicx}
+\usepackage{pdfpages}		% inclusion of PDFs
+\usepackage{enumerate}		% Aufzaehlungen mit alphabetischen oder roemischen Zeichen
+\usepackage{setspace}		%provides double spacing or onehalf spacing
+
+
+% Fonts and Symbols
+
+\usepackage{textcomp}		% Sonderzeichen wie Trademark und Co., aufrechtes \textmu durch \textmu
+% \usepackage{wasysym}		% Sonderzeichen wie z.B. \female und \male, \diameter !! Konflikt mit AMS Symbolen!!
+
+% Language
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}	% least to most frequent language
+\usepackage{fontenc}
+
+% Sourcecode
+
+\usepackage{upquote}		% correct apostrophe use in code environments
+\usepackage{fancyvrb}
+\usepackage{listings}
+\lstset{language=bash,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  frame=l,
+%   frame=shadowbox,
+%   rulesepcolor=\color{Gray},
+  backgroundcolor=\color{White},
+  keywordstyle=\color{Blue},
+  commentstyle=\color{LightSlateGray},
+  stringstyle=\color{Red},
+  basicstyle=\small\color{Black},
+  tabsize=4,
+  showstringspaces=false
+}
+
+% Colors
+
+% \usepackage{color}                      %Text in Farben
+% \usepackage{xcolor}
+
+
+% Science
+
+
+\usepackage{amsthm}
+\usepackage{amsmath}		% Konflikt mit Paket ??? bei Integralsymbolen
+\usepackage{amssymb}		% AMS packages for math symbols
+\usepackage[tight]{units}	%provides correct spacing of units and nice fractions, tight/loose
+\usepackage{texshade}		%alignments (ALN, FASTA, ...)
+
+
+% Tables
+
+\usepackage{array}		%weitere Optionen für Tabellen
+\usepackage{multirow}		%Zellen über mehrere Reihen mit \multirow
+\usepackage{longtable}		%lange Tabellen, angeblich wesentlich besser als supertabular
+%\usepackage{supertabular}	%Umbrechen langer Tabellen in Einzeltabellen
+\usepackage{rotating}		%Tabellen und andere floats drehen
+\usepackage{ctable}		%midrule
+
+% Lists
+
+\usepackage{mdwlist}		% erlaubt mit itemize* auch Listen ohne Zeilenabstand
+
+% Links and References
+
+\usepackage[english]{varioref}		% advanced references using \vref
+
+% Einbindung von SVG Graphiken via Inkscape ab Version 0.48.1-2
+
+\newcommand{\executeiffilenewer}[3]{%
+  \ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+  {\pdffilemoddate{#2}}>0%
+  {\immediate\write18{#3}}\fi%
+}
+% set inkscape binary path according to operating-system
+\IfFileExists{/dev/null}{%
+  \newcommand{\Inkscape}{/usr/bin/inkscape}%
+  }{%
+  \newcommand{\Inkscape}{"C:/Program Files (x86)/Inkscape/inkscape.exe"}%
+}
+% includesvg[scale]{file} command
+\newcommand{\includesvg}[2][1]{%
+  \executeiffilenewer{#1.svg}{#1.pdf}{%
+  \Inkscape -z -D --file="#1.svg" --export-pdf="#1.pdf" --export-latex}%
+  \scalebox{#1}{\input{#2.pdf_tex}}%
+}
+
+% LETZTES USEPACKAGE IM HEADER!
+\usepackage[
+  pdftex,
+  breaklinks=true,
+  colorlinks=true,		% surrounds the links by color frames (false) or colors the text of the links (true)
+  citecolor=black,		% color of citation links
+  urlcolor=blue,		% color of external links
+  linkcolor=blue,		% color of internal links
+  filecolor=blue,		% color of file links
+%   hidelinks,			% hide link color and border
+  plainpages=false
+ ]{hyperref}
+\urlstyle{same}			% comment out for monospaced link text
+% LETZTES USEPACKAGE IM HEADER!

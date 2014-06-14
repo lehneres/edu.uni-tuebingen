@@ -1,0 +1,65 @@
+\include{header}
+
+\date{\today}
+\title{Practical Course Integrative Bioinformatics\\
+       -- Report --}
+\author{Florian Aldehoff - Matrikel 3798908\\
+	Philipp Brachvogel - Matrikel 3808351\\
+	Sebastian Lehnerer - Matrikel 3801387}
+
+\hypersetup {
+  pdftitle = {PIBI3 Report},
+  pdfauthor = {Florian Aldehoff, Philipp Brachvogel, Sebastian Lehnerer}
+}
+
+
+% Attached you find a report from the last PIBI course. The style of your 
+% report should be similar.
+% However Johannes and I decided you should leave out the answers to the 
+% questions from the report. Instead we will check them tomorrow in the 
+% auditorium.
+% I think it is way more reasonable to start the report after the 
+% completion of the course, since you now are not quite sure what will be 
+% done in the end.
+% But what you can already write is a background chapter (2 to 3 pages).
+% Points we want to have included are:
+% 
+%   - Cancer (on the molecular level)
+%   - Microarrays
+%   - GO terms
+%   - GSEA
+%   - Fisher's exact test and statistical testing in general
+
+
+\begin{document}
+  \newpage
+  \include{title}
+  \pagestyle{fancy}                    %Überschriften im Seitenkopf, empty = pages without any numbers, fancy = Titel des aktuellen Bereichs mit Nummer
+  
+  \tableofcontents
+  \newpage
+
+%   \maketitle
+
+%   \include{background}
+%   \include{implementation}
+%   \include{results}
+% %   \include{resultstemp}
+%   \include{discussion}
+
+  \input{background}
+  \input{implementation}
+  \input{results}
+  \input{discussion}
+  
+  \singlespacing 			% hier endet der doppelte Zeilenabstand
+  
+  \bibliographystyle{Science}           %Zitate nach DIN 1501 apadin apalike astron cbe natdin
+  \bibliography{pibi}			% Literaturliste endgueltig anzeigen
+  
+  \let\normalsize\small
+  \appendix
+  \small
+  \include{supplements}
+  
+\end{document}
