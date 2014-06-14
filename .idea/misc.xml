@@ -48,6 +48,7 @@
       </map>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="masterDetails">
     <states>
       <state key="ProjectJDKs.UI">
@@ -75,5 +76,7 @@
       </state>
     </states>
   </component>
+=======
+>>>>>>> 272d4cb0a4be5a0c6d507f3269db42b14e19acf8
 </project>
 

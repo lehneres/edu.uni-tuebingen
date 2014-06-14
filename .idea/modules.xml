@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/de.ut.bioinformatics2.iml" filepath="$PROJECT_DIR$/de.ut.bioinformatics2.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/de.ut.bioinformatics.iml" filepath="$PROJECT_DIR$/de.ut.bioinformatics.iml" />
+>>>>>>> 272d4cb0a4be5a0c6d507f3269db42b14e19acf8
     </modules>
   </component>
 </project>

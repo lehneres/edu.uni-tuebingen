@@ -1,0 +1,10 @@
+Author:Sebastian Lehnerer
+RunILPtoAlignment: produces an alignment from the solution of an ILP
+Read resources/Assignment IV/in1.fa: 8
+Read resources/Assignment IV/ex2.fa: 5
+Seq1  : TTCCCTAA
+Seq2  : AAGGT
+
+Align1: TTCCCTAA---
+Align2: ------AAGGT
+score : 2

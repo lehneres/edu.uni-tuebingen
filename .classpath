@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/biojava3-core-3.0.5.jar" sourcepath="lib/biojava3-core-3.0.5-sources.jar">
 		<attributes>
@@ -13,5 +14,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/Jama-1.0.3.jar"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+>>>>>>> 272d4cb0a4be5a0c6d507f3269db42b14e19acf8
 	<classpathentry kind="output" path="bin"/>
 </classpath>
