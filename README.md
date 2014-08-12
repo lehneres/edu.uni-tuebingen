@@ -1,1 +1,1 @@
-root repository for various projects
+root repository for various projects. See branches for more
